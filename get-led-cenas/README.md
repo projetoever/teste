@@ -1,11 +1,12 @@
-# GET LED CENAS — Studio v0.3 (21/11/2026)
+# GET LED CENAS — Studio v0.4 (21/11/2026)
 
-Produto digital demonstrativo mobile-first da Get Led. Uma ferramenta de curadoria comercial e visual de cenas de automação residencial. O piloto inicial é interno; **os arquivos públicos são genéricos e não incluem nomes ou dados dos clientes**.
+Produto digital demonstrativo mobile-first da Get Led. Uma ferramenta de curadoria comercial e visual de cenas de automação residencial. O piloto inicial é a Família Wolf, mas **os arquivos públicos são genéricos**.
 
-## Novidades v0.3
+## Novidades v0.4
 
-- **Experiência mobile:** carrossel horizontal com foto ilustrativa por ambiente, navegação por arrastar e botões, contador e visualização em tela cheia.
-- **Simulador:** sala de referência com TV, soundbar, pendentes, perfil LED no teto e persiana/blackout. Variações ilustrativas de luz, vídeo e persiana, com antes/depois; conceito simplificado para suíte e banheiro.
+- **Experiência imersiva em tela cheia:** modo paisagem pensado para apresentação comercial, com botões de próxima/anterior, CTA para visitar o ambiente e painel lateral com estado dos equipamentos.
+- **Estratégia de efeito de vídeo:** reprodução da cena com transição antes/depois, reforço de iluminação, mídia e persianas, além de chips animados dos equipamentos envolvidos.
+- **Tour do ambiente:** pontos de foco com zoom suave, enquadramentos e visita manual ou automática para living, jantar, suíte e banheiro.
 - **Personalização:** campo para uma cena inédita com nome, ambiente e descrição, incluída no resumo/WhatsApp. Pode ser a única escolha enviada.
 - **Painel Get Led:** histórico de até 50 formulários gerados com referência interna, título público, data, contagem de cenas, copiar, abrir, compartilhar e excluir registro local. Buscas por referência/título.
 - **Compatibilidade:** preservados 25 tipos de equipamentos, 16 ambientes e 30 cenas-base com filtragem.
@@ -16,7 +17,7 @@ Produto digital demonstrativo mobile-first da Get Led. Uma ferramenta de curador
 - `index.html`, `painel.js`: painel demonstrativo (não autenticado)
 - `formulario.html`, `formulario.js`: experiência do cliente (com seleção e customização)
 - `common.js`, `data.js`: catálogo e verificador de elegibilidade
-- `style.css`, `style-v03.css`: estilo premium responsivo
+- `style.css`, `style-v03.css`, `style-v04.css`: estilo premium responsivo e camada imersiva
 - `assets/sala-premium.webp`, `assets/jantar-premium.webp`: renderizações ilustrativas da Get Led
 - `assets/quarto-conceito.svg`, `assets/banheiro-conceito.svg`: imagens esquemáticas conceituais (não são fotos)
 - `assets/living.webp`, `assets/living-noite.webp`, `assets/logo.svg`: identidade e alternativas
@@ -31,4 +32,4 @@ As imagens são ilustrativas. O simulador não liga equipamentos e não garante 
 
 ## Execução
 
-Servir a pasta como site estático HTTPS (`index.html` e `formulario.html`), sem build ou dependências NPM. Para rodar localmente: `python -m http.server 8080` dentro da pasta. Testes de interface com Chromium Playwright em `test_v03.py` (a rotina de screenshots usa substituição das imagens por data URI ao testar ambiente isolado).
+Servir a pasta como site estático HTTPS (`index.html` e `formulario.html`), sem build ou dependências NPM. Para rodar localmente: `python -m http.server 8080` dentro da pasta. Testes de interface com Chromium Playwright em `test_v04.py` (a rotina de screenshots usa substituição das imagens por data URI ao testar ambiente isolado).

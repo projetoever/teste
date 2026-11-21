@@ -1,5 +1,12 @@
 # Histórico de versões
 
+## v0.4 — 21/11/2026
+- Experiência imersiva em tela cheia redesenhada com foco em navegação em modo paisagem, botões de próxima/anterior e CTA de visita ao ambiente.
+- Estratégia de “efeito de vídeo” no piloto: sequência reproduzível da cena, transição antes/depois mais fluida e chips de equipamentos animados.
+- Tour guiado por pontos do ambiente com foco visual, zoom suave, enquadramentos e navegação manual/automática.
+- Novo painel lateral da experiência com estado dos equipamentos, ações rápidas e leitura mais clara para apresentação comercial.
+- Ajustes de contraste, performance e redução de movimento para manter a navegação confortável em desktop e mobile.
+
 ## v0.3 — 21/11/2026
 - Biblioteca de links históricos no painel, persistida localmente e pesquisável, com ações Copiar, Abrir, WhatsApp e Excluir.
 - Campo de cena personalizada com nome, ambiente e descrição; pode ser enviado mesmo sem cenas prontas.
