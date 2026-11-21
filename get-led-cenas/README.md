@@ -1,35 +1,29 @@
-# GET LED CENAS — Studio v0.4 (21/11/2026)
+# GET LED CENAS — Studio v0.6 | GPU Immersive Preview
 
-Produto digital demonstrativo mobile-first da Get Led. Uma ferramenta de curadoria comercial e visual de cenas de automação residencial. O piloto inicial é a Família Wolf, mas **os arquivos públicos são genéricos**.
+Produto piloto, mobile-first, da Get Led para apresentar cenas por ambiente e equipamentos, selecionar propostas e compartilhar via WhatsApp.
 
-## Novidades v0.4
+## Entregas v0.6
 
-- **Experiência imersiva em tela cheia:** modo paisagem pensado para apresentação comercial, com botões de próxima/anterior, CTA para visitar o ambiente e painel lateral com estado dos equipamentos.
-- **Estratégia de efeito de vídeo:** reprodução da cena com transição antes/depois, reforço de iluminação, mídia e persianas, além de chips animados dos equipamentos envolvidos.
-- **Tour do ambiente:** pontos de foco com zoom suave, enquadramentos e visita manual ou automática para living, jantar, suíte e banheiro.
-- **Personalização:** campo para uma cena inédita com nome, ambiente e descrição, incluída no resumo/WhatsApp. Pode ser a única escolha enviada.
-- **Painel Get Led:** histórico de até 50 formulários gerados com referência interna, título público, data, contagem de cenas, copiar, abrir, compartilhar e excluir registro local. Buscas por referência/título.
-- **Compatibilidade:** preservados 25 tipos de equipamentos, 16 ambientes e 30 cenas-base com filtragem.
-- **Interface:** sombras, margens, responsividade, carrossel com scroll-snap, teclado e preferência de movimento reduzido.
+- Simulador em tela cheia com uma camada **WebGL** (shader GLSL) sobre fotografia realista de referência.
+- Iluminação GPU ilustrativa: dois perfis de teto diagonais, pendentes, halo de televisão e brilho da soundbar.
+- A mesma foto permanece antes e depois da cena, evitando a troca brusca de imóveis e perspectivas.
+- Reprodução com timing para iluminação, persianas, TV e soundbar; tour guiado mantido.
+- Renderização sob demanda: a camada GPU só inicia quando a tela cheia está aberta e é interrompida ao fechar / ocultar a página.
+- Fallback CSS preservado em navegadores sem WebGL, incluindo o navegador do ambiente automatizado de testes.
+- Modo de movimento reduzido com menor atualização de animação.
 
 ## Arquivos
 
-- `index.html`, `painel.js`: painel demonstrativo (não autenticado)
-- `formulario.html`, `formulario.js`: experiência do cliente (com seleção e customização)
-- `common.js`, `data.js`: catálogo e verificador de elegibilidade
-- `style.css`, `style-v03.css`, `style-v04.css`: estilo premium responsivo e camada imersiva
-- `assets/sala-premium.webp`, `assets/jantar-premium.webp`: renderizações ilustrativas da Get Led
-- `assets/quarto-conceito.svg`, `assets/banheiro-conceito.svg`: imagens esquemáticas conceituais (não são fotos)
-- `assets/living.webp`, `assets/living-noite.webp`, `assets/logo.svg`: identidade e alternativas
+- `formulario.html` — experiência do cliente, com camada Canvas GPU.
+- `gpu-effects.js` — renderizador WebGL leve independente de bibliotecas externas, com interface `window.GetLedGPU`.
+- `style-v06.css` — camadas de composição e fallback visual.
+- `formulario.js` — eventos que acionam / param o renderizador e sincronizam o estado dos equipamentos.
+- `index.html` — painel de configuração anterior, mantido.
+- `test_immersive.py` — testes automatizados via Chromium/Playwright.
 
-### Limitações e segurança
+## Limites e próximos passos
 
-**NÃO HÁ LOGIN, BASE DE DADOS OU APROVAÇÃO FORMAL.** Os links são configurados em Base64URL no hash e não representam credencial segura. O histórico é mantido somente por `localStorage` no navegador específico do operador e se perde se os dados do site forem limpos. As respostas não ficam sincronizadas entre dispositivos; só são enviadas quando a pessoa confirma a mensagem no WhatsApp. Não cadastrar dados sensíveis ou dados reais de clientes no painel demonstrativo.
-
-As imagens são ilustrativas. O simulador não liga equipamentos e não garante qualquer controle de estado real. A elegibilidade considera dispositivos gerais e ambientes selecionados, não verifica circuito por cômodo; a Get Led valida comandos e cargas ao programar.
-
-**Próxima fase para uso comercial:** autenticação do painel, multiusuário, projetos privados, banco de dados com RLS, APIs com autorização, formulários públicos de IDs aleatórios revogáveis, respostas persistentes e versionamento de catálogos e aceite.
-
-## Execução
-
-Servir a pasta como site estático HTTPS (`index.html` e `formulario.html`), sem build ou dependências NPM. Para rodar localmente: `python -m http.server 8080` dentro da pasta. Testes de interface com Chromium Playwright em `test_v04.py` (a rotina de screenshots usa substituição das imagens por data URI ao testar ambiente isolado).
+- O ambiente é uma fotografia com efeitos projetados, **não é um modelo tridimensional** nem realidade virtual. A aproximação ao WebXR exige geometria 3D real e mapeamento espacial dos objetos.
+- WebGL não estava disponível no navegador automatizado local; foi validado o fallback CSS e o fluxo de interação. A etapa GPU deve também ser testada em aparelho físico compatível.
+- Para a fase de ambiente 3D real, estudar `Three.js` (WebGLRenderer/WebXR), modelos glTF/GLB e `model-viewer` para visualização/AR compatível. Implantar de forma progressiva e sob demanda.
+- O painel é demonstrativo e não oferece autenticação. Não utilizar dados pessoais ou aprovações reais no link aberto.

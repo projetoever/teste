@@ -1,0 +1,390 @@
+/* GET LED CENAS — v0.5 high-detail scene effects */
+.studio,
+.sim-modal-visual{
+  --led-line:#ffd09c;
+  --led-core:#fff3d7;
+  --led-bloom:rgba(255,193,102,.42);
+  --tv-ambient:rgba(44,140,255,.24);
+  --tv-warm:rgba(125,232,255,.18);
+  --shadow-heavy:0 26px 60px rgba(0,0,0,.38);
+}
+
+.studio .studio-overlay,
+.sim-modal-visual .studio-overlay{
+  background:
+    linear-gradient(180deg, rgba(2,8,12,.08), rgba(3,12,18,.18) 40%, rgba(1,7,12,.32)),
+    radial-gradient(circle at 72% 38%, rgba(74,163,255,.06), transparent 30%),
+    radial-gradient(circle at 21% 17%, rgba(255,214,147,.08), transparent 24%);
+}
+
+.studio .studio-led,
+.sim-modal-visual .studio-led{
+  position:absolute;
+  left:7%;
+  top:7.1%;
+  width:72%;
+  height:5px;
+  border-radius:999px;
+  background:linear-gradient(90deg, rgba(255,255,255,.15) 0%, var(--led-core) 13%, var(--led-line) 55%, rgba(255,203,133,.55) 100%);
+  box-shadow:0 0 8px rgba(255,228,180,.46), 0 0 24px rgba(255,192,105,.34), 0 0 64px rgba(255,170,76,.22);
+  opacity:.08;
+  filter:blur(1.1px);
+  pointer-events:none;
+}
+.studio .studio-led::before,
+.sim-modal-visual .studio-led::before{
+  content:'';
+  position:absolute;
+  left:2%;
+  right:2%;
+  top:-18px;
+  height:56px;
+  border-radius:50%;
+  background:radial-gradient(ellipse at center, rgba(255,223,171,.42), rgba(255,199,106,.14) 48%, transparent 76%);
+  filter:blur(10px);
+  opacity:.7;
+}
+.studio .studio-led::after,
+.sim-modal-visual .studio-led::after{
+  content:'';
+  position:absolute;
+  left:-22%;
+  top:-1px;
+  width:26%;
+  height:7px;
+  border-radius:999px;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.95) 52%, transparent);
+  filter:blur(1.5px);
+  opacity:0;
+}
+
+.studio .studio-pendant,
+.sim-modal-visual .studio-pendant{
+  position:absolute;
+  top:26%;
+  left:10%;
+  width:26%;
+  height:23%;
+  opacity:.14;
+  background:radial-gradient(ellipse at 28% 34%, rgba(255,213,145,.34), transparent 24%), radial-gradient(ellipse at 58% 52%, rgba(255,213,145,.26), transparent 18%);
+  mix-blend-mode:screen;
+  pointer-events:none;
+}
+.studio .studio-pendant::before,
+.sim-modal-visual .studio-pendant::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 25% 34%, rgba(255,215,138,.95) 0 10%, transparent 13%),
+    radial-gradient(circle at 56% 55%, rgba(255,215,138,.85) 0 8%, transparent 11%),
+    radial-gradient(ellipse at 25% 34%, rgba(255,216,141,.25), transparent 34%),
+    radial-gradient(ellipse at 56% 55%, rgba(255,216,141,.18), transparent 28%);
+  opacity:.7;
+}
+
+.studio .studio-curtain,
+.sim-modal-visual .studio-curtain{
+  top:36%;
+  right:19.5%;
+  width:45%;
+  height:31%;
+  border-radius:0 0 12px 12px;
+  background:
+    linear-gradient(180deg, rgba(36,38,40,.88), rgba(21,24,28,.96)),
+    repeating-linear-gradient(90deg, rgba(64,68,72,.38) 0 8px, rgba(25,28,32,.04) 8px 16px);
+  box-shadow:-16px 12px 40px rgba(0,0,0,.18), inset 0 0 18px rgba(255,255,255,.03);
+  opacity:0;
+}
+.studio .studio-curtain::after,
+.sim-modal-visual .studio-curtain::after{
+  content:'';
+  position:absolute;
+  left:6%;
+  right:6%;
+  bottom:-14px;
+  height:22px;
+  border-radius:50%;
+  background:radial-gradient(ellipse at center, rgba(0,0,0,.3), transparent 68%);
+}
+
+.studio .studio-tv,
+.sim-modal-visual .studio-tv{
+  position:absolute;
+  top:24.7%;
+  right:4.3%;
+  width:23.8%;
+  height:28.5%;
+  border-radius:16px;
+  opacity:0;
+  overflow:hidden;
+  border:2px solid rgba(12,18,30,.88);
+  background:linear-gradient(145deg, rgba(5,8,12,.96), rgba(10,16,26,.92) 55%, rgba(15,24,36,.86));
+  box-shadow:0 0 0 1px rgba(255,255,255,.03), var(--shadow-heavy);
+  transform:scale(.965);
+  filter:none;
+  transition:opacity .9s ease, transform 1s ease, box-shadow 1s ease;
+  pointer-events:none;
+}
+.studio .studio-tv::before,
+.sim-modal-visual .studio-tv::before{
+  content:'';
+  position:absolute;
+  inset:4.5%;
+  border-radius:10px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0) 16%),
+    radial-gradient(circle at 82% 20%, rgba(104,220,255,.52), transparent 20%),
+    radial-gradient(circle at 18% 82%, rgba(33,86,255,.35), transparent 24%),
+    linear-gradient(145deg, rgba(11,28,54,.92), rgba(7,15,30,.98) 55%, rgba(10,34,72,.94)),
+    repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 6px),
+    linear-gradient(90deg, transparent 0 12%, rgba(90,199,255,.26) 12% 14%, transparent 14% 60%, rgba(255,255,255,.08) 60% 72%, transparent 72% 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.05), inset 0 -18px 30px rgba(8,15,28,.58), 0 0 28px rgba(84,177,255,.12);
+  opacity:0;
+  transform:scale(.92);
+}
+.studio .studio-tv::after,
+.sim-modal-visual .studio-tv::after{
+  content:'';
+  position:absolute;
+  left:50%;
+  bottom:7px;
+  width:26%;
+  height:4px;
+  transform:translateX(-50%);
+  border-radius:999px;
+  background:linear-gradient(90deg, rgba(255,255,255,.1), rgba(126,235,255,.95), rgba(255,255,255,.1));
+  box-shadow:0 0 8px rgba(91,222,255,.45);
+  opacity:0;
+}
+.studio.media-on .studio-tv,
+.sim-modal-visual.media-on .studio-tv{
+  opacity:1;
+  transform:scale(1);
+  box-shadow:0 0 0 1px rgba(255,255,255,.04), 0 26px 60px rgba(0,0,0,.36), 0 0 52px rgba(35,121,255,.12);
+}
+.studio.media-on .studio-tv::before,
+.sim-modal-visual.media-on .studio-tv::before{
+  opacity:.98;
+  transform:scale(1);
+  animation:getledTvSceneDrift 6s ease-in-out infinite;
+}
+.studio.media-on .studio-tv::after,
+.sim-modal-visual.media-on .studio-tv::after{opacity:.92}
+
+.studio .studio-soundbar,
+.sim-modal-visual .studio-soundbar{
+  position:absolute;
+  top:64.3%;
+  right:6.2%;
+  width:19.8%;
+  height:2.25%;
+  border-radius:999px;
+  background:linear-gradient(180deg, rgba(44,49,57,.98), rgba(12,17,24,.98));
+  border:1px solid rgba(94,108,126,.36);
+  box-shadow:0 8px 20px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.04);
+  opacity:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+.studio .studio-soundbar::before,
+.sim-modal-visual .studio-soundbar::before{
+  content:'';
+  position:absolute;
+  inset:20% 6%;
+  border-radius:999px;
+  background:repeating-linear-gradient(90deg, rgba(98,227,232,.28) 0 5px, transparent 5px 10px);
+  opacity:0;
+}
+.studio .studio-soundbar::after,
+.sim-modal-visual .studio-soundbar::after{
+  content:'';
+  position:absolute;
+  inset:-24px -32px;
+  border-radius:999px;
+  background:radial-gradient(circle at center, rgba(92,246,238,.18), transparent 56%);
+  opacity:0;
+}
+.studio.media-on .studio-soundbar,
+.sim-modal-visual.media-on .studio-soundbar{opacity:1}
+.studio.media-on .studio-soundbar::before,
+.sim-modal-visual.media-on .studio-soundbar::before{opacity:.72;animation:getledEq 1.15s steps(10) infinite}
+
+.studio .studio-glow,
+.sim-modal-visual .studio-glow{
+  background:
+    radial-gradient(ellipse at 18% 18%, rgba(255,210,140,.25), transparent 32%),
+    radial-gradient(ellipse at 84% 43%, rgba(84,164,255,.1), transparent 24%),
+    radial-gradient(ellipse at 50% 104%, rgba(255,181,103,.14), transparent 40%);
+  opacity:.25;
+}
+.studio.cinema .studio-glow,
+.sim-modal-visual.cinema .studio-glow{opacity:.38}
+.studio.noite .studio-glow,
+.sim-modal-visual.noite .studio-glow{opacity:.31}
+.studio.manha .studio-glow,
+.sim-modal-visual.manha .studio-glow{opacity:.18}
+
+.studio.cinema .studio-led,
+.sim-modal-visual.cinema .studio-led{opacity:.93}
+.studio.noite .studio-led,
+.sim-modal-visual.noite .studio-led{opacity:.54}
+.studio.jantar .studio-led,
+.sim-modal-visual.jantar .studio-led{opacity:.86}
+.studio.manha .studio-led,
+.sim-modal-visual.manha .studio-led{opacity:.38}
+.studio.leitura .studio-led,
+.sim-modal-visual.leitura .studio-led{opacity:.56}
+
+.studio.cinema .studio-pendant,
+.sim-modal-visual.cinema .studio-pendant{opacity:.08}
+.studio.jantar .studio-pendant,
+.sim-modal-visual.jantar .studio-pendant{opacity:.52}
+.studio.manha .studio-pendant,
+.sim-modal-visual.manha .studio-pendant{opacity:.24}
+.studio.leitura .studio-pendant,
+.sim-modal-visual.leitura .studio-pendant{opacity:.18}
+
+.sequence-live .studio-led,
+.sequence-live .studio-pendant,
+.sequence-live .studio-tv,
+.sequence-live .studio-soundbar{will-change:opacity,transform,box-shadow,filter}
+.sequence-live .studio-led::after{animation:getledSweepPro 1.55s cubic-bezier(.22,.82,.28,1) .18s both}
+.sequence-live .studio-led::before{animation:getledCeilingBloom 1.9s ease-out both}
+.sequence-live .studio-tv{animation:getledTvHousing 1.2s ease both}
+.sequence-live .studio-tv::before{animation:getledTvBootPro 1.9s cubic-bezier(.2,.8,.2,1) .14s both, getledTvSceneDrift 6s 2s ease-in-out infinite}
+.sequence-live .studio-tv::after{animation:getledTvPowerGlow 1.6s ease .2s both}
+.sequence-live .studio-soundbar::before{animation:getledEq 1.05s steps(10) .8s 4}
+.sequence-live .studio-soundbar::after{animation:getledWaveSpread 1.9s ease-out .95s both}
+.sequence-live .studio-curtain{animation:getledCurtainSettle 1.2s cubic-bezier(.22,.82,.28,1) both}
+
+.sequence-status{
+  position:absolute;
+  top:18px;
+  right:18px;
+  z-index:9;
+  width:min(34vw, 360px);
+  padding:13px 15px 14px;
+  border-radius:18px;
+  border:1px solid rgba(123,212,216,.34);
+  background:linear-gradient(180deg, rgba(5,18,26,.82), rgba(3,13,20,.7));
+  backdrop-filter:blur(18px);
+  box-shadow:0 18px 34px rgba(0,0,0,.24);
+  color:#eefdfc;
+}
+.sequence-status::after{
+  content:'';
+  position:absolute;
+  left:14px;
+  right:14px;
+  bottom:10px;
+  height:2px;
+  border-radius:999px;
+  background:linear-gradient(90deg, rgba(108,232,230,.12), rgba(108,232,230,.84), rgba(108,232,230,.12));
+  transform-origin:left center;
+  transform:scaleX(.22);
+  opacity:.68;
+}
+.sequence-status.live::after{animation:getledStatusBar 2.35s linear infinite}
+.sequence-status small{display:block;margin-bottom:6px;font-size:10px;letter-spacing:.16em;color:#86d4d8;text-transform:uppercase}
+.sequence-status strong{display:block;font-size:17px;line-height:1.2;margin-bottom:5px;font-weight:700}
+.sequence-status span{display:block;font-size:12px;line-height:1.45;color:#bfd8dc}
+.sequence-status.live{border-color:rgba(133,239,243,.56);box-shadow:0 22px 40px rgba(0,0,0,.28), 0 0 0 1px rgba(92,236,232,.08) inset}
+
+.device-chip{position:relative;overflow:hidden}
+.device-chip::after{
+  content:'';
+  position:absolute;
+  inset:auto -30% 0;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(128,237,238,.88), transparent);
+  opacity:.6;
+}
+.sequence-running .device-chip::after{animation:getledChipScan 1.4s linear infinite}
+
+@keyframes getledSweepPro{
+  0%{transform:translateX(0);opacity:0}
+  18%{opacity:.95}
+  100%{transform:translateX(430%);opacity:0}
+}
+@keyframes getledCeilingBloom{
+  0%{opacity:.08;transform:scaleX(.78)}
+  40%{opacity:.95;transform:scaleX(1)}
+  100%{opacity:.72;transform:scaleX(1)}
+}
+@keyframes getledTvHousing{
+  0%{opacity:.02;transform:scale(.94)}
+  38%{opacity:.55;transform:scale(.985)}
+  100%{opacity:1;transform:scale(1)}
+}
+@keyframes getledTvBootPro{
+  0%{opacity:0;transform:scale(.88);filter:brightness(.15) saturate(.4)}
+  16%{opacity:.24;transform:scale(.92);filter:brightness(.45) saturate(.55)}
+  36%{opacity:.92;transform:scale(1);filter:brightness(1.45) saturate(1.15)}
+  58%{opacity:.98;filter:brightness(1.05) saturate(1.02)}
+  100%{opacity:.98;transform:scale(1);filter:brightness(1) saturate(1)}
+}
+@keyframes getledTvPowerGlow{
+  0%{opacity:0;transform:translateX(-50%) scaleX(.35)}
+  40%{opacity:1;transform:translateX(-50%) scaleX(1.08)}
+  100%{opacity:.92;transform:translateX(-50%) scaleX(1)}
+}
+@keyframes getledTvSceneDrift{
+  0%,100%{background-position:0 0, 82% 20%, 18% 82%, 0 0, 0 0, 0 0}
+  50%{background-position:0 0, 78% 18%, 22% 84%, 0 0, 0 5px, 100% 0}
+}
+@keyframes getledEq{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(10px)}
+}
+@keyframes getledWaveSpread{
+  0%{opacity:0;transform:scale(.55)}
+  25%{opacity:.84}
+  100%{opacity:0;transform:scale(1.42)}
+}
+@keyframes getledCurtainSettle{
+  0%{filter:brightness(.85)}
+  50%{filter:brightness(1.06)}
+  100%{filter:brightness(1)}
+}
+@keyframes getledStatusBar{
+  0%{transform:scaleX(.12);opacity:.35}
+  40%{transform:scaleX(.92);opacity:1}
+  100%{transform:scaleX(.12);opacity:.35}
+}
+@keyframes getledChipScan{
+  0%{transform:translateX(-120%)}
+  100%{transform:translateX(120%)}
+}
+
+.sim-modal-visual.media-on .studio-tv,
+.sim-modal-visual.media-on .studio-soundbar,
+.sim-modal-visual .studio-led,
+.sim-modal-visual .studio-pendant{z-index:2}
+.sim-modal-visual .sequence-status{width:min(31vw,380px)}
+.sim-modal-visual.cinema .studio-tv::before,
+.sim-modal-visual.noite .studio-tv::before{box-shadow:inset 0 0 0 1px rgba(255,255,255,.06), inset 0 -18px 30px rgba(8,15,28,.68), 0 0 38px rgba(84,177,255,.18)}
+
+@media (max-width: 980px){
+  .sequence-status{width:min(58vw, 320px)}
+}
+@media (max-width: 760px){
+  .sequence-status{top:54px;right:12px;left:12px;width:auto;padding:11px 12px 12px;border-radius:16px}
+  .sequence-status strong{font-size:15px}
+  .sequence-status span{font-size:11px}
+  .studio .studio-tv,
+  .sim-modal-visual .studio-tv{border-radius:12px}
+}
+@media (orientation: landscape) and (max-width: 980px){
+  .sequence-status{top:14px;right:14px;left:auto;width:min(42vw,320px)}
+}
+@media (prefers-reduced-motion: reduce){
+  .sequence-status::after,
+  .device-chip::after,
+  .studio-led::before,
+  .studio-led::after,
+  .studio-tv::before,
+  .studio-tv::after,
+  .studio-soundbar::before,
+  .studio-soundbar::after{animation:none !important}
+}

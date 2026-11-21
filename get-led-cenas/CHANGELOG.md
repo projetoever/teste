@@ -1,20 +1,14 @@
-# Histórico de versões
+# Histórico GET LED CENAS
 
-## v0.4 — 21/11/2026
-- Experiência imersiva em tela cheia redesenhada com foco em navegação em modo paisagem, botões de próxima/anterior e CTA de visita ao ambiente.
-- Estratégia de “efeito de vídeo” no piloto: sequência reproduzível da cena, transição antes/depois mais fluida e chips de equipamentos animados.
-- Tour guiado por pontos do ambiente com foco visual, zoom suave, enquadramentos e navegação manual/automática.
-- Novo painel lateral da experiência com estado dos equipamentos, ações rápidas e leitura mais clara para apresentação comercial.
-- Ajustes de contraste, performance e redução de movimento para manter a navegação confortável em desktop e mobile.
+## v0.6 — 2026-11-21
+- Camada de renderização WebGL transparente para LEDs, pendentes, TV e áudio, com renderização apenas no modo imersivo.
+- Transições antes/depois usando a mesma imagem arquitetônica de referência.
+- Fallback CSS preservado; app continua funcional quando WebGL não está disponível.
+- Integração com reprodução das cenas e ciclo de vida do modal; parada ao fechar.
+- Novos testes automatizados mobile e desktop para fluxo de exibição, tour, troca de cenas e fallback.
 
-## v0.3 — 21/11/2026
-- Biblioteca de links históricos no painel, persistida localmente e pesquisável, com ações Copiar, Abrir, WhatsApp e Excluir.
-- Campo de cena personalizada com nome, ambiente e descrição; pode ser enviado mesmo sem cenas prontas.
-- Carrossel de cenas com fotos/ilustrações genéricas correspondentes ao tipo de ambiente, contador, setas e scroll por gesto.
-- Modal de visualização ampliada responsiva, antes/depois e seleção direta, incluindo teclado Escape e preferência de movimento reduzido.
-- Novo render conceitual de living com TV, soundbar, pendentes e perfis no teto; efeitos de iluminação e persiana.
-- Correção de margens mobile e de posições de efeito da persiana.
-- Preservados os filtros, os três presets e os limites explícitos de privacidade do protótipo.
+## v0.5
+- Reforço visual dos efeitos CSS para LED, TV, soundbar e status de reprodução.
 
-## v0.2 — 21/11/2026
-- Redesenho inicial premium, busca, filtros, presets e catálogo de 30 cenas.
+## v0.4
+- Modo imersivo em paisagem, visita guiada e painel de estados dos equipamentos.

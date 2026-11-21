@@ -16,9 +16,9 @@ const config = valid ? {
   rooms: raw.rooms.filter(x => typeof x === 'string' && CENAS_CATALOG.rooms.includes(x))
 } : fallback;
 const scenes = u.visible(config);
-let selected = new Set(), active = scenes[0] || null, filter = 'Todas', query = '', limit = 6, isBefore = false, modalOpen = false, activeStop = 0, tourTimer = null;
+let selected = new Set(), active = scenes[0] || null, filter = 'Todas', query = '', limit = 6, isBefore = false, modalOpen = false, activeStop = 0, tourTimer = null, sequencePlaying = false;
 let stageTimers = [];
-const sessionKey = 'getled_cenas_selection_v04_' + hash.slice(0, 55).replace(/[^\w-]/g, '') + '_' + scenes.length;
+const sessionKey = 'getled_cenas_selection_v06_' + hash.slice(0, 55).replace(/[^\w-]/g, '') + '_' + scenes.length;
 
 try {
   const v = JSON.parse(localStorage.getItem(sessionKey) || 'null');
@@ -70,6 +70,52 @@ const TOUR_MAP = {
   ]
 };
 
+
+function sequenceDefaults() {
+  const env = active ? (ENV_LABEL[sceneEnv(active)] || 'Ambiente') : 'Ambiente';
+  return {
+    title: active ? `Pronto para ${active.name}` : 'Pronto para reproduzir',
+    detail: `Ambiente de referência: ${env}. Use “Reproduzir cena” para visualizar perfis de LED, persianas e mídia.`
+  };
+}
+function setSequenceStatus(title, detail) {
+  const box = $('sequenceStatus');
+  if (!box) return;
+  const strong = box.querySelector('strong');
+  const span = box.querySelector('span');
+  if (strong) strong.textContent = title;
+  if (span) span.textContent = detail;
+}
+function resetSequenceStatus() {
+  sequencePlaying = false;
+  const box = $('sequenceStatus');
+  const base = sequenceDefaults();
+  setSequenceStatus(base.title, base.detail);
+  box?.classList.remove('live');
+  $('modalVisual')?.classList.remove('sequence-running');
+  $('studio')?.classList.remove('sequence-running');
+}
+function renderSequencePlan(s) {
+  const plan = [
+    { delay: 0, title: 'Capturando estado atual', detail: 'Preparando o ambiente base para a transição.' },
+    { delay: 280, title: 'Ajustando iluminação', detail: 'Perfis de LED, luz indireta e pendentes entram em cena.' }
+  ];
+  if (hasShadeSupport() && sceneEnv(s) !== 'banho') {
+    plan.push({
+      delay: 760,
+      title: 'Sincronizando persianas',
+      detail: studioState(s, false).showShade ? 'Fechando o plano de fundo para criar atmosfera.' : 'Abrindo para valorizar a luz natural do ambiente.'
+    });
+  }
+  if (config.equipment.includes('tv') && s.needs.includes('tv')) {
+    plan.push({ delay: 1240, title: 'Ligando TV', detail: 'Backlight, brilho e conteúdo entram de forma progressiva.' });
+  }
+  if (config.equipment.includes('som') && (s.needs.includes('som') || s.needs.includes('tv') || mood(s) === 'jantar')) {
+    plan.push({ delay: 1500, title: 'Ativando áudio', detail: 'Soundbar e presença sonora são ilustrados no ambiente.' });
+  }
+  plan.push({ delay: 2140, title: 'Cena aplicada', detail: s.desc });
+  return plan;
+}
 function sceneEnv(s) {
   const r = (s.rooms || []).join(' ').toLocaleLowerCase('pt-BR');
   const cat = (s.cat || '').toLocaleLowerCase('pt-BR');
@@ -81,7 +127,8 @@ function sceneEnv(s) {
 }
 function imgPath(s, before = false) {
   const env = sceneEnv(s);
-  if (env === 'living' && !before && ['cinema', 'noite'].includes(mood(s))) return IMG.livingNight;
+  // Preserve the same room photograph during playback; effects are composited over it.
+  if (env === 'living' && !before && ['cinema', 'noite'].includes(mood(s))) return IMG.living;
   return IMG[env] || IMG.living;
 }
 function mood(s) {
@@ -138,7 +185,15 @@ function applyAllStages() {
   if (!active) return;
   const point = getStops(active)[activeStop] || getStops(active)[0];
   applyStage($('studio'), active, isBefore, point);
-  if (modalOpen) applyStage($('modalVisual'), active, isBefore, point);
+  if (modalOpen) {
+    applyStage($('modalVisual'), active, isBefore, point);
+    window.GetLedGPU?.setScene({
+      led: (!isBefore && ['cinema','noite','jantar','leitura'].includes(mood(active))) ? 1 : isBefore ? .07 : .45,
+      tv: !isBefore && config.equipment.includes('tv') && active.needs.includes('tv') ? 1 : 0,
+      shade: !isBefore && hasShadeSupport() && ['cinema','noite'].includes(mood(active)) ? 1 : 0,
+      audio: !isBefore && config.equipment.includes('som') && (active.needs.includes('som') || active.needs.includes('tv')) ? 1 : 0
+    });
+  }
   updateFocus(point);
   updateMainState();
   if (modalOpen) {
@@ -209,6 +264,7 @@ function clearStageTimers() {
   stageTimers = [];
   $('modalVisual')?.classList.remove('sequence-live');
   $('studio')?.classList.remove('sequence-live');
+  resetSequenceStatus();
 }
 function setActiveStop(index, manual = false) {
   if (!active) return;
@@ -234,6 +290,11 @@ function playSceneSequence() {
   if (!active) return;
   stopTour();
   clearStageTimers();
+  window.GetLedGPU?.playSequence();
+  sequencePlaying = true;
+  $('sequenceStatus')?.classList.add('live');
+  $('modalVisual')?.classList.add('sequence-running');
+  $('studio')?.classList.add('sequence-running');
   isBefore = true;
   applyAllStages();
   syncBefore();
@@ -247,15 +308,19 @@ function playSceneSequence() {
     void $('studio').offsetWidth;
     $('studio').classList.add('sequence-live');
   }
+  renderSequencePlan(active).forEach(step => {
+    stageTimers.push(setTimeout(() => setSequenceStatus(step.title, step.detail), step.delay));
+  });
   stageTimers.push(setTimeout(() => {
     isBefore = false;
     applyAllStages();
     syncBefore();
-  }, 450));
+  }, 560));
   stageTimers.push(setTimeout(() => {
     $('modalVisual')?.classList.remove('sequence-live');
     $('studio')?.classList.remove('sequence-live');
-  }, 2300));
+    resetSequenceStatus();
+  }, 2680));
 }
 function simulate(s, opts = {}) {
   if (!s) return;
@@ -296,6 +361,7 @@ function updateModal() {
   $('modalSubtitle').textContent = `${ENV_LABEL[sceneEnv(active)] || 'Ambiente'} · melhor experiência em paisagem`;
   $('modalDetails').textContent = active.desc;
   $('modalChoose').textContent = selected.has(active.id) ? '✓ Cena selecionada' : '+ Escolher cena';
+  if (!sequencePlaying) resetSequenceStatus();
   applyAllStages();
   updateTourUI();
   updateModalStateGrid();
@@ -488,6 +554,7 @@ function openModal() {
   modalOpen = true;
   $('simModal').classList.remove('hidden');
   document.body.classList.add('modal-open');
+  window.GetLedGPU?.start();
   updateModal();
   $('modalClose').focus();
 }
@@ -497,6 +564,7 @@ function closeModal() {
   clearStageTimers();
   $('simModal').classList.add('hidden');
   document.body.classList.remove('modal-open');
+  window.GetLedGPU?.stop();
   $('fullscreenSim').focus();
 }
 

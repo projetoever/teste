@@ -1,0 +1,17 @@
+/* GPU enhanced light field — progressive WebGL rendering with CSS fallback. */
+.gpu-light-canvas {position:absolute;inset:0;width:100%;height:100%;display:none;z-index:3;pointer-events:none;opacity:.98;mix-blend-mode:screen;}
+.gpu-light-canvas.gpu-ready{display:block;}
+.sim-modal-visual .studio-led,
+.sim-modal-visual .studio-pendant{transition:opacity 1.3s ease,filter 1.3s ease;}
+.sim-modal-visual[data-renderer="WebGL"] .studio-led{opacity:.18!important;}
+.sim-modal-visual[data-renderer="WebGL"] .studio-pendant{opacity:.04!important;}
+/* Stronger overall dark-room contrast, but no asset switching or jump cuts. */
+.sim-modal-visual.cinema .studio-image{filter:brightness(.42) saturate(.82) contrast(1.08);}
+.sim-modal-visual.noite .studio-image{filter:brightness(.49) saturate(.83) contrast(1.05);}
+.sim-modal-visual.jantar .studio-image{filter:brightness(.63) sepia(.08) saturate(1.03);}
+.sim-modal-visual.manha .studio-image{filter:brightness(1.03) saturate(1.03);}
+.sim-modal-visual .studio-curtain{z-index:2;}
+/* Make TV visible at the right-wall position in the same photo. */
+.sim-modal-visual .studio-tv{top:26%;right:6.3%;width:20%;height:27%;z-index:4;}
+.sim-modal-visual .studio-soundbar{top:64.8%;right:8.5%;width:16.2%;height:1.8%;z-index:4;}
+@media(prefers-reduced-motion:reduce){.gpu-light-canvas{transition:none!important}}
