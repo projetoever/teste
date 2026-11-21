@@ -1,52 +1,67 @@
-# GET LED CENAS
+# GET LED CENAS — Studio v0.2
 
 **Experiências sob medida, em um toque.**
 
-Produto digital da Get Led para configurar catálogos de cenas inteligentes por residência e permitir que cada cliente explore, selecione e sugira experiências de automação — sobretudo pelo celular.
+Protótipo mobile-first de uma ferramenta de criação de catálogos de cenas inteligentes por imóvel. A Get Led seleciona os recursos e ambientes; o cliente explora uma experiência visual, escolhe as cenas e encaminha um resumo pelo WhatsApp da Ponte One (11) 91864-5151.
 
-## Estado: protótipo público demonstrativo v0.1
+## Novidades da v0.2 — 21/11/2026
 
-- **Painel de demonstração (`index.html`)**: título público, identificação interna local, 25 categorias de equipamentos, 16 ambientes, 30 cenas-base, prévia compatível, geração de link e preparação de mensagem para o WhatsApp da Ponte One: **(11) 91864-5151**.
-- **Formulário do cliente (`formulario.html`)**: sem dados privados, cenas filtradas, simulação visual ilustrativa, seleção de experiências, campo de observações e resumo para WhatsApp.
-- **Persistência neste protótipo**: rascunho do painel somente no `localStorage`. O link contém **somente** configuração pública, codificada mas **não criptografada**. Envio de respostas: abre o WhatsApp; **não existe banco de dados, aceite eletrônico juridicamente formal ou recebimento silencioso de dados**.
-- **Projeto-piloto**: Família Wolf, mas o produto é Genérico/Get Led. A vinculação com um cliente real acontecerá apenas no painel futuro com autenticação.
+- Nova interface premium Get Led em grafite, turquesa e dourado suave.
+- Painel Get Led com modelos **Casa essencial**, **Apartamento completo** e **Residência premium**.
+- Busca entre **25 categorias de equipamentos**, **16 ambientes** selecionáveis e prévia das **30 cenas-base**.
+- Cálculo instantâneo de compatibilidade por equipamentos obrigatórios e ambiente.
+- Link de demonstração com configuração pública, sem identificação interna do projeto.
+- Formulário mobile: hero arquitetônico ilustrativo, seis cartões iniciais, **busca de cenas**, filtros e carregamento progressivo.
+- Simulador de luz/TV/persiana apenas **visual**, com alternância Antes/Depois.
+- Seleção mantida temporariamente na aba do cliente (`sessionStorage`) e envio assistido por WhatsApp, sem backend.
+- Correções de layout responsivo, estados de botão, controles de teclado e validação mais rígida do payload.
 
-## Executar localmente
+## Como executar
 
-Servir a pasta em HTTP local (evitar `file://` em navegadores que restringem recursos):
+Basta servir esta pasta em um servidor estático HTTPS. Por exemplo:
 
 ```bash
 python -m http.server 8080
 ```
 
-Abrir `http://localhost:8080`. O formulário de amostra está em `/formulario.html`.
+- `/index.html` — painel demonstrativo Get Led
+- `/formulario.html` — experiência de demonstração do morador
 
-## Estrutura
+Sem build, sem banco, sem dependências NPM. Os arquivos são `HTML`, `CSS`, `JS` e um WebP local. O navegador pode buscar tipografia de provedores externos; caso indisponível, há fallback de sistema.
 
-- `index.html`, `painel.js` — demonstração de criação de formulário
-- `formulario.html`, `formulario.js` — experiência pública do morador
-- `data.js` — biblioteca de recursos, ambientes e cenas
-- `style.css`, `assets/logo.svg` — identidade visual
-- `docs/PLANO_MESTRE.md` — arquitetura de produto e roadmap
-- `docs/SEGURANCA.md` — regras mínimas antes de disponibilizar o painel real
-- `docs/MODELO_DE_DADOS.sql` — esquema de referência para implementação futura
-- `test_ui.py` — roteiro de testes para Playwright (exige ambiente com navegador Chromium)
+## Arquitetura dos arquivos
 
-## Limites importantes
+```
+index.html             painel demonstrativo
+painel.js              configuração, modelos, filtros e geração do link
+formulario.html        experiência mobile-first do cliente
+formulario.js          simulador, filtros, busca, seleção e WhatsApp
+common.js              codificação de configuração e regras de compatibilidade
+data.js                catálogo padrão — 25 equipamentos, 16 ambientes, 30 cenas
+style.css              tokens e layouts responsivos
+assets/logo.svg        identidade visual
+assets/living.webp     render ilustrativo recortado sem identificação residencial
+README.md              orientação técnica
+CHANGELOG.md           mudanças e testes
+SECURITY.md            limites do protótipo e requisitos para produção
+```
 
-1. **Não divulgar o painel demonstrativo como painel seguro**. Não há autenticação, autorização por usuário ou registro persistente no servidor.
-2. Não inserir dados de identificação de pessoas, endereço exato, plantas, IDs de dispositivos, câmeras, códigos IR/RF, senhas ou token no link público.
-3. O hash da URL é legível por quem possui o link, portanto não é proteção de dados.
-4. As simulações são **didáticas**; não acionam dispositivos Smart Life, Alexa, Zigbee ou RF.
-5. Para a versão comercial, implementar backend com controle de acesso, links aleatórios por formulário, versionamento, expiração/revogação e proteção antispam, conforme o plano mestre.
+## Segurança: condição obrigatória antes de uso com dados reais
 
-## Branding
+**O painel de demonstração NÃO tem login.** O código dessa v0.2 é apenas para avaliação e não deve ser apresentado como área administrativa segura. Não registrar informações privadas, endereços, rotinas detalhadas de ausência, plantas elétricas, tokens Smart Life, senhas ou informações pessoais.
 
-**Nome:** GET LED CENAS  
-**Tagline:** Experiências sob medida, em um toque.  
-**Arquitetura de marca:** Get Led (empresa) → Get Led Cenas (produto) → Coleções personalizadas (cliente).  
-**Paleta:** grafite `#081116`, azul-petróleo `#12222A`, turquesa `#64E2D7`, dourado suave `#E5C18C`, branco `#F7F7F3`.
+O fragmento `#p=` do link contém texto de apresentação, equipamentos e ambientes codificados em Base64URL. **Não é criptografado.** A versão comercial precisa usar API autenticada para o painel, formulários publicados em URLs aleatórias revogáveis, armazenamento do lado do servidor, segregação dos dados e registro de versões/aceites. A seleção atual não é transmitida automaticamente nem salva num servidor; clicar WhatsApp abre a conversa para confirmação manual.
 
-## Direitos e confidencialidade
+## Testes v0.2
 
-Arte vetorial original do produto, catálogo de demonstração sem marcas de terceiros e sem credenciais. Reservar o repositório de produção como **privado** durante o desenvolvimento, salvo decisão expressa em contrário.
+Rodados com Chromium via Playwright em `390×844` e `1440×900`:
+- 25 equipamentos / 16 ambientes exibidos corretamente.
+- Modelo essencial: 13 cenas; apartamento: 19; premium: 30.
+- Identificação interna ausente no link público.
+- Formulário carregado pela configuração gerada no painel.
+- Filtros, busca, carregamento progressivo, cena selecionada e Antes/Depois funcionais.
+- Sem erros JS, sem rolagem horizontal mobile.
+
+## Piloto e marca
+
+Marca principal: **GET LED CENAS**. Primeiro caso de teste: Família Wolf (dados internos mantidos exclusivamente no dossiê do cliente). A aplicação foi preparada para reutilização com outros projetos.
