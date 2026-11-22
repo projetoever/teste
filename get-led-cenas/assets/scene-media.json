@@ -1,14 +1,14 @@
 {
   "schema": 1,
   "label": "GET LED CENAS — biblioteca audiovisual",
-  "version": "0.8",
+  "version": "1.0-pilot",
   "rightsNote": "Usar somente mídias autorizadas pela Get Led ou licenciadas. Nunca expor imagens ou dados privados do cliente sem consentimento.",
   "environments": {
     "living": {
-      "poster": "assets/sala-premium.webp",
-      "before": "assets/sala-premium.webp",
+      "poster": "assets/rooms/living-model/GLC_LIVING_BASE_001.webp",
+      "before": "assets/rooms/living-model/GLC_LIVING_BASE_001.webp",
       "after": null,
-      "alt": "Sala contemporânea ilustrativa com TV, sofá, persianas e iluminação arquitetônica"
+      "alt": "Sala modelo Get Led Cenas com TV, soundbar, ar-condicionado, pendentes, arandelas e persiana"
     },
     "jantar": {
       "poster": "assets/jantar-premium.webp",
@@ -32,19 +32,19 @@
   "scenes": {
     "SC01": {
       "room": "living",
-      "status": "em_producao",
-      "mp4": null,
+      "status": "piloto_tecnico",
+      "mp4": "assets/video/GLC_SC01_BLIND_TECHNICAL_V01.mp4",
       "webm": null,
-      "poster": "assets/sala-premium.webp",
-      "duration": 8,
+      "poster": "assets/rooms/living-model/GLC_LIVING_BASE_001.webp",
+      "duration": 5,
       "storyboard": [
-        "sala base iluminada",
-        "blackout desce dentro da janela",
-        "iluminação geral desliga",
-        "perfil LED acende",
-        "TV inicia",
-        "cena estabilizada"
-      ]
+        "persiana aberta",
+        "persiana desce mantendo câmera fixa",
+        "persiana fechada; TV e luzes permanecem inalteradas"
+      ],
+      "before": "assets/rooms/living-model/GLC_LIVING_BASE_001.webp",
+      "after": "assets/rooms/living-model/GLC_LIVING_SC01_BLIND_CLOSED_001.webp",
+      "technical_notice": "Animação de referência apenas da persiana. Não é vídeo PixVerse nem cena completa homologada."
     },
     "SC03": {
       "room": "jantar",

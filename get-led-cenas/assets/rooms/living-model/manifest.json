@@ -1,0 +1,17 @@
+{
+  "id": "GLC-SC01-BLIND-001",
+  "room": "living-model",
+  "scene": "SC01",
+  "equipment": "persiana",
+  "camera": "locked",
+  "duration_s": 5,
+  "fps": 24,
+  "resolution": "1280x720",
+  "engine": "deterministic-2.5d-reference",
+  "review_status": "demonstrativo_nao_homologado",
+  "ai_generation": false,
+  "input": "GLC_LIVING_BASE_001.png",
+  "end": "GLC_LIVING_SC01_BLIND_CLOSED_001.png",
+  "clip": "GLC_SC01_BLIND_TECHNICAL_V01.mp4",
+  "note": "Pilot video for infrastructure, baseline movement and PixVerse keyframe inputs; not an approved photoreal simulation."
+}

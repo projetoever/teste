@@ -60,7 +60,7 @@
       mp4:safeSource(clip.mp4),webm:safeSource(clip.webm),status:clip.status||'em_producao',
       steps:Array.isArray(clip.storyboard)?clip.storyboard:[]};
   }
-  const canShowFilm = entry => entry && entry.status==='aprovado' && (entry.mp4||entry.webm);
+  const canShowFilm = entry => entry && ['aprovado','piloto_tecnico'].includes(entry.status) && (entry.mp4||entry.webm);
 
   function showControls(){
     controlsVisible=true;modal.classList.remove('hud-hidden');
@@ -129,9 +129,9 @@
       }
       video.load();
       noVideo.hidden=true;
-      showNotice('VÍDEO DEMONSTRATIVO · NÃO ACIONA A RESIDÊNCIA');
+      showNotice(media.status === 'piloto_tecnico' ? 'PILOTO TÉCNICO 2.5D · PERSIANA · NÃO É RENDER IA' : 'VÍDEO DEMONSTRATIVO · NÃO ACIONA A RESIDÊNCIA');
       $('modalPlayScene').disabled=false;
-      $('theaterAudio').disabled=false;
+      $('theaterAudio').disabled=media.status === 'piloto_tecnico';
       $('modalBeforeAfter').disabled=!media.after;
       progress.classList.remove('is-disabled');
       playLabel.textContent='Reproduzir';
