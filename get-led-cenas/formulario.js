@@ -171,7 +171,7 @@ function deviceStateSummary(s, before = isBefore) {
   return { light, blind, media, audio, chips };
 }
 function applyStage(el, s, before = false, stop = null) {
-  if (!el || !s) return;
+  if (!el || !s || el.id === 'modalVisual') return;
   const d = studioState(s, before);
   const point = stop || getStops(s)[0];
   const baseClass = el.id === 'modalVisual' ? 'sim-modal-visual' : 'studio';
@@ -297,11 +297,13 @@ function playSceneSequence() {
   isBefore = true;
   applyAllStages();
   syncBefore();
-  if (window.GetLedPlayer) {
-    window.GetLedPlayer.play(active);
+  if (window.GetLedVideoPlayer) {
+    window.GetLedVideoPlayer.play(active);
+    sequencePlaying = false;
   } else {
     isBefore = false;
     applyAllStages();
+    sequencePlaying = false;
   }
 }
 
@@ -313,6 +315,7 @@ function simulate(s, opts = {}) {
   isBefore = false;
   applyAllStages();
   if (modalOpen) updateModal();
+  window.GetLedVideoPlayer?.sync(active);
 }
 function filteredScenes() {
   return scenes.filter(s => (filter === 'Todas' || s.cat === filter) && (s.name + ' ' + s.desc + ' ' + s.cat + ' ' + s.rooms.join(' ')).toLocaleLowerCase('pt-BR').includes(query));
@@ -328,7 +331,7 @@ function changeScene(step) {
   if (idx < 0) idx = 0;
   idx = (idx + step + pool.length) % pool.length;
   simulate(pool[idx]);
-  if (modalOpen) playSceneSequence();
+  if (modalOpen) window.GetLedVideoPlayer?.sync(active);
 }
 function updateTourUI() {
   if (!active) return;
@@ -343,8 +346,8 @@ function updateModal() {
   $('modalSceneTitle').textContent = active.name;
   $('modalSubtitle').textContent = `${ENV_LABEL[sceneEnv(active)] || 'Ambiente'} · melhor experiência em paisagem`;
   $('modalDetails').textContent = active.desc;
-  $('modalChoose').textContent = selected.has(active.id) ? '✓ Cena selecionada' : '+ Escolher cena';
-  window.GetLedPlayer?.updateSceneMeta(active);
+  // O botão contém ícone e rótulo persistentes; o player atualiza a seleção.
+  window.GetLedVideoPlayer?.sync(active);
   if (!sequencePlaying) resetSequenceStatus();
   applyAllStages();
   updateTourUI();
@@ -459,7 +462,7 @@ function renderChoices() {
   }).join('') : '<div class="empty">Escolha suas cenas no catálogo ou na simulação. Elas aparecerão aqui.</div>';
   $('choiceList').querySelectorAll('[data-remove]').forEach(b => b.addEventListener('click', () => toggle(b.dataset.remove)));
   if (active) $('chooseSim').textContent = selected.has(active.id) ? '✓ Cena selecionada' : '+ Quero esta cena';
-  if ($('modalChoose')) $('modalChoose').textContent = selected.has(active?.id) ? '✓ Cena selecionada' : '+ Escolher cena';
+  window.GetLedVideoPlayer?.sync(active);
 }
 function persist() {
   try {
@@ -539,8 +542,7 @@ function openModal() {
   $('simModal').classList.remove('hidden');
   document.body.classList.add('modal-open');
   updateModal();
-  window.GetLedPlayer?.open(active);
-  if (sceneEnv(active) !== 'living') window.GetLedGPU?.start();
+  window.GetLedVideoPlayer?.open(active);
   $('modalClose').focus();
 }
 function closeModal() {
@@ -549,8 +551,7 @@ function closeModal() {
   clearStageTimers();
   $('simModal').classList.add('hidden');
   document.body.classList.remove('modal-open');
-  window.GetLedGPU?.stop();
-  window.GetLedPlayer?.close();
+  window.GetLedVideoPlayer?.close();
   $('fullscreenSim').focus();
 }
 
@@ -561,6 +562,7 @@ $('modalBeforeAfter').addEventListener('click', () => {
   isBefore = !isBefore;
   applyAllStages();
   syncBefore();
+  window.GetLedVideoPlayer?.showReference(active, isBefore);
 });
 $('modalPlayScene').addEventListener('click', playSceneSequence);
 $('modalVisitToggle').addEventListener('click', toggleTour);

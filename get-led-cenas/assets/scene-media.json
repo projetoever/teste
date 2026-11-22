@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "label": "GET LED CENAS — biblioteca audiovisual",
+  "version": "0.8",
+  "rightsNote": "Usar somente mídias autorizadas pela Get Led ou licenciadas. Nunca expor imagens ou dados privados do cliente sem consentimento.",
+  "environments": {
+    "living": {
+      "poster": "assets/sala-premium.webp",
+      "before": "assets/sala-premium.webp",
+      "after": null,
+      "alt": "Sala contemporânea ilustrativa com TV, sofá, persianas e iluminação arquitetônica"
+    },
+    "jantar": {
+      "poster": "assets/jantar-premium.webp",
+      "before": "assets/jantar-premium.webp",
+      "after": null,
+      "alt": "Ambiente de jantar contemporâneo ilustrativo"
+    },
+    "suite": {
+      "poster": "assets/quarto-conceito.svg",
+      "before": "assets/quarto-conceito.svg",
+      "after": null,
+      "alt": "Quarto conceitual ilustrativo"
+    },
+    "banho": {
+      "poster": "assets/banheiro-conceito.svg",
+      "before": "assets/banheiro-conceito.svg",
+      "after": null,
+      "alt": "Banheiro conceitual ilustrativo"
+    }
+  },
+  "scenes": {
+    "SC01": {
+      "room": "living",
+      "status": "em_producao",
+      "mp4": null,
+      "webm": null,
+      "poster": "assets/sala-premium.webp",
+      "duration": 8,
+      "storyboard": [
+        "sala base iluminada",
+        "blackout desce dentro da janela",
+        "iluminação geral desliga",
+        "perfil LED acende",
+        "TV inicia",
+        "cena estabilizada"
+      ]
+    },
+    "SC03": {
+      "room": "jantar",
+      "status": "em_producao",
+      "mp4": null,
+      "webm": null,
+      "poster": "assets/jantar-premium.webp",
+      "duration": 7,
+      "storyboard": [
+        "ambiente base",
+        "pendentes acendem",
+        "luz de apoio compõe",
+        "cena estabilizada"
+      ]
+    },
+    "SC06": {
+      "room": "suite",
+      "status": "em_producao",
+      "mp4": null,
+      "webm": null,
+      "poster": "assets/quarto-conceito.svg",
+      "duration": 8,
+      "storyboard": [
+        "suíte iluminada",
+        "blackout fecha, se disponível",
+        "luzes de uso geral desligam",
+        "apoios conforme instalação"
+      ]
+    }
+  }
+}
