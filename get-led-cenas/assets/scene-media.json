@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "label": "GET LED CENAS — biblioteca audiovisual",
-  "version": "1.0-pilot",
+  "version": "1.3-catalog-first",
   "rightsNote": "Usar somente mídias autorizadas pela Get Led ou licenciadas. Nunca expor imagens ou dados privados do cliente sem consentimento.",
   "environments": {
     "living": {
@@ -32,19 +32,19 @@
   "scenes": {
     "SC01": {
       "room": "living",
-      "status": "piloto_tecnico",
-      "mp4": "assets/video/GLC_SC01_BLIND_TECHNICAL_V01.mp4",
+      "status": "em_producao",
+      "mp4": null,
       "webm": null,
-      "poster": "assets/rooms/living-model/GLC_LIVING_BASE_001.webp",
+      "poster": "assets/catalogo-piloto/SC01-antes.webp",
       "duration": 5,
       "storyboard": [
         "persiana aberta",
         "persiana desce mantendo câmera fixa",
         "persiana fechada; TV e luzes permanecem inalteradas"
       ],
-      "before": "assets/rooms/living-model/GLC_LIVING_BASE_001.webp",
-      "after": "assets/rooms/living-model/GLC_LIVING_SC01_BLIND_CLOSED_001.webp",
-      "technical_notice": "Animação de referência apenas da persiana. Não é vídeo PixVerse nem cena completa homologada."
+      "before": "assets/catalogo-piloto/SC01-antes.webp",
+      "after": null,
+      "technical_notice": "Estados de referência arquivados; player exibe imagem estática até aprovação de mídia premium."
     },
     "SC03": {
       "room": "jantar",
@@ -73,6 +73,24 @@
         "luzes de uso geral desligam",
         "apoios conforme instalação"
       ]
+    },
+    "SC04": {
+      "room": "living",
+      "status": "em_producao",
+      "mp4": null,
+      "poster": "assets/catalogo-piloto/SC04-antes.webp",
+      "before": "assets/catalogo-piloto/SC04-antes.webp",
+      "after": null,
+      "technical_notice": "Estados de referência arquivados; player exibe imagem estática até aprovação de mídia premium."
+    },
+    "SC05": {
+      "room": "living",
+      "status": "em_producao",
+      "mp4": null,
+      "poster": "assets/catalogo-piloto/SC05-antes.webp",
+      "before": "assets/catalogo-piloto/SC05-antes.webp",
+      "after": null,
+      "technical_notice": "Estados de referência arquivados; player exibe imagem estática até aprovação de mídia premium."
     }
   }
 }

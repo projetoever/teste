@@ -1,0 +1,11 @@
+/* v1.3 — the catalog remains the product, not the internal video lab */
+.scene-curation-info{padding:14px 10px 8px;border-bottom:1px solid rgba(110,220,220,.13)}
+.scene-curation-info strong{color:#ddf7f5;font-size:13px}.scene-curation-info p{font-size:12px;line-height:1.6;color:#a9c6c8}
+.curated-check{cursor:pointer;gap:9px}.curated-check input{accent-color:#6cebe3;width:18px;height:18px;flex:0 0 auto}
+.curated-intro{padding:30px 0 0}.curated-intro h2{font-size:clamp(25px,4vw,42px);margin:7px 0 8px;letter-spacing:-.04em}.curated-intro p{max-width:780px;color:#aecbd0;line-height:1.65}
+.curated-living #simulador{display:none}.curated-living .catalog-section{padding-top:20px}.curated-living .catalog-secondary-title,.curated-living #sceneGrid{display:none}
+.curated-living .scene-immersive-card{border-color:rgba(104,222,219,.24)}
+.internal-lab-link{font-size:11px;color:#9bbbc2}
+@media(max-width:650px){.curated-intro{padding-top:22px}.scene-curation-info{padding:12px 4px}.curated-living .catalog-section{padding-top:10px}}
+
+.pilot-card-details{font-size:12px;color:#82ddd6;line-height:1.6;margin:7px 0}.pilot-card-disclaimer{display:block;color:#92aeb5;font-size:11px;margin:5px 0 11px}

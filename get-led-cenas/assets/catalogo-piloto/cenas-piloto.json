@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "version": "1.3",
+  "status": "draft",
+  "safe_public": true,
+  "scenes": [
+    {
+      "id": "SC01",
+      "titulo": "Cinema em Casa",
+      "categoria": "Entretenimento",
+      "ambiente": "Living / Sala",
+      "status": "rascunho_nao_homologado",
+      "observacao": "Estados demonstrativos herdados da v1.2; revisar qualidade antes de publicar como vídeo premium.",
+      "recursos": [
+        "iluminacao",
+        "tv",
+        "persianas",
+        "som"
+      ],
+      "etapas": [
+        "persiana fecha",
+        "luzes principais apagam",
+        "perfil LED acende",
+        "TV liga",
+        "soundbar inicia"
+      ],
+      "antes": "assets/catalogo-piloto/SC01-antes.webp",
+      "depois": "assets/catalogo-piloto/SC01-depois-RASCUNHO.webp",
+      "video": null,
+      "modelo_visual": "GLC-LIVING-001",
+      "aprovacao_cliente": "a_coletar"
+    },
+    {
+      "id": "SC04",
+      "titulo": "Receber Visitas",
+      "categoria": "Convivência",
+      "ambiente": "Living / Sala",
+      "status": "rascunho_nao_homologado",
+      "observacao": "Estados demonstrativos herdados da v1.2; revisar qualidade antes de publicar como vídeo premium.",
+      "recursos": [
+        "iluminacao",
+        "persianas",
+        "som"
+      ],
+      "etapas": [
+        "persiana em estado escolhido",
+        "pendentes acendem",
+        "arandelas acendem",
+        "perfis LED de apoio",
+        "música opcional"
+      ],
+      "antes": "assets/catalogo-piloto/SC04-antes.webp",
+      "depois": "assets/catalogo-piloto/SC04-depois-RASCUNHO.webp",
+      "video": null,
+      "modelo_visual": "GLC-LIVING-001",
+      "aprovacao_cliente": "a_coletar"
+    },
+    {
+      "id": "SC05",
+      "titulo": "Boa Noite Social",
+      "categoria": "Rotina",
+      "ambiente": "Living / Sala",
+      "status": "rascunho_nao_homologado",
+      "observacao": "Estados demonstrativos herdados da v1.2; revisar qualidade antes de publicar como vídeo premium.",
+      "recursos": [
+        "iluminacao",
+        "persianas"
+      ],
+      "etapas": [
+        "luzes principais desligam",
+        "arandelas e perfis de apoio conforme circuito",
+        "persiana fecha se desejado"
+      ],
+      "antes": "assets/catalogo-piloto/SC05-antes.webp",
+      "depois": "assets/catalogo-piloto/SC05-depois-RASCUNHO.webp",
+      "video": null,
+      "modelo_visual": "GLC-LIVING-001",
+      "aprovacao_cliente": "a_coletar"
+    }
+  ]
+}

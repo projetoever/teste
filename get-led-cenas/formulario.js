@@ -9,13 +9,16 @@ const fallback = {
   equipment: ['iluminacao', 'ar', 'persianas', 'tv', 'som', 'assistente'],
   rooms: ['Living / Sala', 'Sala de jantar', 'Suíte master', 'Corredor', 'Banheiro', 'Lavabo']
 };
-const valid = raw && raw.v === 1 && Array.isArray(raw.equipment) && raw.equipment.length <= 25 && Array.isArray(raw.rooms) && raw.rooms.length <= 16 && typeof raw.title === 'string' && raw.title.length <= 65 && typeof raw.welcome === 'string' && raw.welcome.length <= 250;
+const valid = raw && raw.v === 1 && Array.isArray(raw.equipment) && raw.equipment.length <= 25 && Array.isArray(raw.rooms) && raw.rooms.length <= 16 && (!('sceneIds' in raw) || (Array.isArray(raw.sceneIds) && raw.sceneIds.length <= 30 && raw.sceneIds.every(x => typeof x === 'string')))  && typeof raw.title === 'string' && raw.title.length <= 65 && typeof raw.welcome === 'string' && raw.welcome.length <= 250;
 const config = valid ? {
   ...raw,
   equipment: raw.equipment.filter(x => typeof x === 'string' && CENAS_CATALOG.equipment.some(y => y.id === x)),
-  rooms: raw.rooms.filter(x => typeof x === 'string' && CENAS_CATALOG.rooms.includes(x))
+  rooms: raw.rooms.filter(x => typeof x === 'string' && CENAS_CATALOG.rooms.includes(x)),
+  ...(Array.isArray(raw.sceneIds) ? {sceneIds:raw.sceneIds.filter(id => CENAS_CATALOG.scenes.some(s => s.id === id))} : {})
 } : fallback;
 const scenes = u.visible(config);
+const isPilotLiving = Array.isArray(config.sceneIds) && config.sceneIds.length === 3 && ['SC01','SC04','SC05'].every(id=>config.sceneIds.includes(id));
+if(isPilotLiving){document.body.classList.add('curated-living'); const anchor=document.querySelector('.hero-cta a');if(anchor){anchor.href='#catalogo';anchor.textContent='Explorar cenas ↓'} const info=document.getElementById('curatedIntro'); if(info)info.hidden=false;}
 let selected = new Set(), active = scenes[0] || null, filter = 'Todas', query = '', limit = 6, isBefore = false, modalOpen = false, activeStop = 0, tourTimer = null, sequencePlaying = false;
 let stageTimers = [];
 const sessionKey = 'getled_cenas_selection_v07_' + hash.slice(0, 55).replace(/[^\w-]/g, '') + '_' + scenes.length;
@@ -126,6 +129,7 @@ function sceneEnv(s) {
   return 'living';
 }
 function imgPath(s, before = false) {
+  if(isPilotLiving && ['SC01','SC04','SC05'].includes(s.id)) return 'assets/catalogo-piloto/living-master-base.webp';
   const env = sceneEnv(s);
   // Preserve the same room photograph during playback; effects are composited over it.
   if (env === 'living' && !before && ['cinema', 'noite'].includes(mood(s))) return IMG.living;
@@ -389,8 +393,9 @@ $('clientSceneSearch').addEventListener('input', e => {
 $('loadMore').addEventListener('click', () => { limit += 6; renderCatalog(); });
 
 function renderCarousel(cards) {
+  const pilotDetails={'SC01':'Persiana · iluminação · TV e som','SC04':'Pendentes · arandelas · ambiente social','SC05':'Iluminação de apoio · saída do living'};
   const track = $('sceneCarousel');
-  track.innerHTML = cards.map(s => `<article class="scene-immersive-card" data-card="${u.text(s.id)}"><button type="button" class="scene-picture" style="--card-image:url('${imgPath(s, false)}')" data-view="${u.text(s.id)}" aria-label="Visualizar ${u.text(s.name)} em tela cheia"><span class="card-picture-gradient"></span><span class="card-picture-tag">${u.text((s.rooms || [])[0] || 'RESIDÊNCIA')}</span><span class="card-picture-expand">⛶ Ampliar</span></button><div class="scene-feature-body"><div class="tile-header"><span class="scene-id">${u.text(s.id)}</span><span class="cat-chip">${u.text(s.cat)}</span></div><h3>${u.text(s.name)}</h3><p>${u.text(s.desc)}</p><button type="button" class="button ${selected.has(s.id) ? 'primary' : 'outline'}" data-choose="${u.text(s.id)}">${selected.has(s.id) ? '✓ Selecionada' : '+ Escolher cena'}</button></div></article>`).join('');
+  track.innerHTML = cards.map(s => `<article class="scene-immersive-card" data-card="${u.text(s.id)}"><button type="button" class="scene-picture" style="--card-image:url('${imgPath(s, false)}')" data-view="${u.text(s.id)}" aria-label="Visualizar ${u.text(s.name)} em tela cheia"><span class="card-picture-gradient"></span><span class="card-picture-tag">${u.text((s.rooms || [])[0] || 'RESIDÊNCIA')}</span><span class="card-picture-expand">⛶ Ampliar</span></button><div class="scene-feature-body"><div class="tile-header"><span class="scene-id">${u.text(s.id)}</span><span class="cat-chip">${u.text(s.cat)}</span></div><h3>${u.text(s.name)}</h3><p>${u.text(s.desc)}</p>${isPilotLiving?`<div class="pilot-card-details">${u.text(pilotDetails[s.id]||'Composição a validar')}</div><small class="pilot-card-disclaimer">Conceito ilustrativo · mídia em produção</small>`:''}<button type="button" class="button ${selected.has(s.id) ? 'primary' : 'outline'}" data-choose="${u.text(s.id)}">${selected.has(s.id) ? '✓ Selecionada' : '+ Escolher cena'}</button></div></article>`).join('');
   track.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => {
     simulate(u.byScene(b.dataset.view));
     openModal();
