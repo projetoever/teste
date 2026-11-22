@@ -18,6 +18,7 @@
   let hideTimer = 0;
   let finger = null;
   let destroyed = false;
+  let keyboardActive = false;
   let startedAt = 0;
   const sceneNames = { living:'LIVING / SALA',jantar:'JANTAR',suite:'SUÍTE',banho:'BANHO / LAVABO' };
 
@@ -68,7 +69,8 @@
     modal.classList.remove('hud-hidden');
     clearTimeout(hideTimer);
     if(!persist && !PAUSE)hideTimer=setTimeout(()=>{
-      if(!playing && modal.contains(document.activeElement) && document.activeElement?.matches('button'))return;
+      if(keyboardActive && modal.contains(document.activeElement))return;
+      if(document.activeElement?.matches('.player-hud'))stage.focus({preventScroll:true});
       modal.classList.add('hud-hidden');
     },4200);
   }
@@ -150,13 +152,13 @@
   window.addEventListener('resize',sizeRoom,{passive:true});
   function open(s){
     sizeRoom();
-    destroyed=false;currentScene=s;clearSequence();
+    keyboardActive=false;destroyed=false;currentScene=s;clearSequence();
     modal.classList.remove('hud-hidden');
     sync(s,false);
     showHud();
   }
   function close(){
-    clearSequence();visit(false);clearTimeout(hideTimer);
+    keyboardActive=false;clearSequence();visit(false);clearTimeout(hideTimer);
     modal.classList.remove('hud-hidden');
   }
   function swapScene(delta){if(!modal.classList.contains('hidden')){changeScene(delta);showHud();}}
@@ -172,6 +174,7 @@
   });
   stage.addEventListener('pointermove',e=>{if(e.pointerType==='mouse' && !modal.classList.contains('hidden') && !modal.classList.contains('hud-hidden'))showHud();},{passive:true});
   stage.addEventListener('pointerdown',e=>{
+    keyboardActive=false;
     if(e.target.closest('button')){finger=null;return;}
     finger={x:e.clientX,y:e.clientY,wasSwipe:false,t:Date.now()};
   },{passive:true});
@@ -188,9 +191,9 @@
     if(e.key==='h' || e.key==='H'){
       e.preventDefault();modal.classList.toggle('hud-hidden');
     }
-    if(e.key==='Tab')showHud({persist:true});
+    if(e.key==='Tab'){keyboardActive=true;showHud({persist:true});}
   });
-  modal.addEventListener('focusin',()=>showHud({persist:true}));
+  modal.addEventListener('focusin',()=>{if(keyboardActive)showHud({persist:true});});
   document.addEventListener('visibilitychange',()=>{if(document.hidden){clearSequence();} });
   window.GetLedPlayer={open,close,play,sync,visit,updateSceneMeta,showHud,get status(){return {playing,currentPhase,tourActive,scene:currentScene?.id||null}}};
 })();
