@@ -1,0 +1,67 @@
+{
+  "schema": 2,
+  "version": "1.2",
+  "source": "assets/rooms/living-model/GLC_LIVING_BASE_001.png",
+  "resolution": [
+    1280,
+    720
+  ],
+  "engine": "geometry-locked-deterministic-video",
+  "approved": false,
+  "presets": {
+    "blind": {
+      "id": "GLC_SC01_PERSIANA_V02",
+      "duration": 5.0,
+      "before": "assets/rooms/living-model/v12/GLC_SC01_PERSIANA_V02_BEFORE.webp",
+      "middle": "assets/rooms/living-model/v12/GLC_SC01_PERSIANA_V02_MID.webp",
+      "after": "assets/rooms/living-model/v12/GLC_SC01_PERSIANA_V02_AFTER.webp",
+      "mp4": "assets/video/v12/GLC_SC01_PERSIANA_V02.mp4",
+      "status": "piloto_tecnico_nao_homologado"
+    },
+    "sconces": {
+      "id": "GLC_SC02_ARANDELAS_V01",
+      "duration": 3.0,
+      "before": "assets/rooms/living-model/v12/GLC_SC02_ARANDELAS_V01_BEFORE.webp",
+      "middle": "assets/rooms/living-model/v12/GLC_SC02_ARANDELAS_V01_MID.webp",
+      "after": "assets/rooms/living-model/v12/GLC_SC02_ARANDELAS_V01_AFTER.webp",
+      "mp4": "assets/video/v12/GLC_SC02_ARANDELAS_V01.mp4",
+      "status": "piloto_tecnico_nao_homologado"
+    },
+    "pendants": {
+      "id": "GLC_SC03_LUSTRES_V01",
+      "duration": 3.0,
+      "before": "assets/rooms/living-model/v12/GLC_SC03_LUSTRES_V01_BEFORE.webp",
+      "middle": "assets/rooms/living-model/v12/GLC_SC03_LUSTRES_V01_MID.webp",
+      "after": "assets/rooms/living-model/v12/GLC_SC03_LUSTRES_V01_AFTER.webp",
+      "mp4": "assets/video/v12/GLC_SC03_LUSTRES_V01.mp4",
+      "status": "piloto_tecnico_nao_homologado"
+    },
+    "led": {
+      "id": "GLC_SC04_PERFIS_LED_V01",
+      "duration": 3.5,
+      "before": "assets/rooms/living-model/v12/GLC_SC04_PERFIS_LED_V01_BEFORE.webp",
+      "middle": "assets/rooms/living-model/v12/GLC_SC04_PERFIS_LED_V01_MID.webp",
+      "after": "assets/rooms/living-model/v12/GLC_SC04_PERFIS_LED_V01_AFTER.webp",
+      "mp4": "assets/video/v12/GLC_SC04_PERFIS_LED_V01.mp4",
+      "status": "piloto_tecnico_nao_homologado"
+    },
+    "tv": {
+      "id": "GLC_SC05_TV_V01",
+      "duration": 3.0,
+      "before": "assets/rooms/living-model/v12/GLC_SC05_TV_V01_BEFORE.webp",
+      "middle": "assets/rooms/living-model/v12/GLC_SC05_TV_V01_MID.webp",
+      "after": "assets/rooms/living-model/v12/GLC_SC05_TV_V01_AFTER.webp",
+      "mp4": "assets/video/v12/GLC_SC05_TV_V01.mp4",
+      "status": "piloto_tecnico_nao_homologado"
+    },
+    "cinema": {
+      "id": "GLC_SC06_CINEMA_COMPOSTO_V01",
+      "duration": 7.0,
+      "before": "assets/rooms/living-model/v12/GLC_SC06_CINEMA_COMPOSTO_V01_BEFORE.webp",
+      "middle": "assets/rooms/living-model/v12/GLC_SC06_CINEMA_COMPOSTO_V01_MID.webp",
+      "after": "assets/rooms/living-model/v12/GLC_SC06_CINEMA_COMPOSTO_V01_AFTER.webp",
+      "mp4": "assets/video/v12/GLC_SC06_CINEMA_COMPOSTO_V01.mp4",
+      "status": "piloto_tecnico_nao_homologado"
+    }
+  }
+}

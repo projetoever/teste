@@ -1,9 +1,11 @@
+> **PLANO CANÔNICO v1.0:** consultar `docs/PLANO_MESTRE_v1_0.md`. Este documento conserva o planejamento histórico anterior.
+
 # GET LED CENAS — Plano Mestre e Roadmap
 
 **Atualizado:** 22/11/2026  
 **Produto:** GET LED CENAS  
 **Visão:** experiência digital premium que traduz equipamentos, cômodos e cenas de automação em demonstrações audiovisuais compreensíveis e selecionáveis pelo cliente.  
-**Cliente-piloto:** caso interno em arquivo reservado; sem nomes no repositório público.  
+**Cliente-piloto:** Família Wolf (somente no acervo privado; não incluir identidade/dados em código público).  
 **Parceiros comerciais:** Get Led / Ponte One / E3 Reformas conforme cada projeto.
 
 ## Regras permanentes de produto
@@ -98,3 +100,44 @@ Cota inicial recomendada para o primeiro teste: **até três tentativas PixVerse
 - Kling 4.0 first/last/fal: https://fal.ai/models/kling/v4/image-to-video/api
 - Runway Gen-4.5: https://help.runwayml.com/hc/en-us/articles/46974685288467-Creating-with-Gen-4-5
 - DaVinci Resolve Fusion: https://www.blackmagicdesign.com/br/products/davinciresolve/fusion
+
+## Sprint v1.1 — Refinamento dos efeitos
+**Objetivo:** trocar a leitura “tosca” de simulação por um laboratório de camadas mais convincente e útil para homologação.
+
+### Entregue
+- showroom em modo laboratório de efeitos
+- presets independentes para persiana, arandelas, lustres, perfis de LED, TV e cena cinema
+- HUD com linguagem de player e auto-hide para leitura mobile/landscape
+- slider de ajuste fino para inspecionar transições quadro a quadro
+
+### Próximos passos
+1. produzir quadro final aprovado para arandelas
+2. produzir quadro final aprovado para perfil LED
+3. testar glow/reflexo da TV com conteúdo mais realista
+4. levar os quadros aprovados para o pipeline de vídeo externo
+5. substituir o vídeo técnico por vídeo premium homologado
+
+### Observação operacional
+Os arquivos foram organizados localmente e versionados por pasta (`get_led_cenas_v11`) para reduzir retrabalho e facilitar sincronização manual em Drive/GitHub.
+
+
+## 2026-11-22 | Sprint 1.2 — Microefeitos e interface audiovisual
+### Concluído
+- [x] Geometria da sala de referência fixada em 1280×720.
+- [x] Máscara de persiana por painel e proteção da geometria à frente (sofá).
+- [x] Seis videos técnicos curtos e estados before/mid/after.
+- [x] Motor determinístico documentado em `render_effects_v12.py`.
+- [x] Showroom usa videos MP4, com seletor de efeitos, scrubber e fullscreen.
+- [x] QA automatizado para mobile, paisagem e desktop (sem rolagem horizontal).
+### Próximos marcos de qualidade
+1. Aprovação visual da persiana V2; se a textura não passar, criar estado final no motor de imagens e interpolação via PixVerse.
+2. Melhorar efeito de arandelas e pendentes com máscara de luminária e iluminação realista em materiais.
+3. Validar os perfis que existem no projeto arquitetônico antes de representar todos os rasgos como LEDs.
+4. Evoluir TV para conteúdo original/royalty-free, e limitar reflexão a regiões fisicamente plausíveis.
+5. Gerar e homologar MP4 Premium com o PixVerse utilizando os frames da biblioteca versionada.
+6. Só então atualizar os vídeos do catálogo público, com aprovação explícita da Get Led.
+### Guardrails
+- Nunca substituir um asset anterior; inserir revisões em subpastas versionadas.
+- Evitar afirmar realismo físico perfeito sem render arquitetônico ou vídeo revisado.
+- Não publicar identidade e detalhes privativos de cliente em links abertos.
+- A biblioteca comercial serve vários clientes; use ambientes genéricos.

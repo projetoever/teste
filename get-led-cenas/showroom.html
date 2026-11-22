@@ -1,1 +1,87 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#061219"><title>GET LED CENAS — Showroom SC01</title><meta name="description" content="Experiência audiovisual técnica da automação de persianas Get Led Cenas"><link rel="stylesheet" href="showroom.css"></head><body><header><a class="brand" href="video-lab.html"><span class="glyph">◈</span><span>GET LED <strong>CENAS</strong><small>SHOWROOM / LAB</small></span></a><div class="head-link"><a href="video-lab.html">Video Lab</a><a href="formulario.html">Catálogo</a></div></header><main><section class="video-shell"><video id="pilot" poster="assets/rooms/living-model/GLC_LIVING_BASE_001.webp" preload="metadata" playsinline muted controlsList="nodownload noplaybackrate" aria-label="Vídeo técnico de persiana motorizada descendo em sala ilustrativa"><source src="assets/video/GLC_SC01_BLIND_TECHNICAL_V01.mp4" type="video/mp4"></video><div class="grad"></div><span class="watermark">GET LED CENAS · PILOTO TÉCNICO / NÃO HOMOLOGADO</span><button class="big-play" id="bigPlay" aria-label="Reproduzir vídeo">▶</button><div class="hud" id="hud"><div class="titleblock"><small>SC01 / LIVING MODELO</small><h1>Persiana motorizada.</h1><p>De aberta a fechada, em 5 segundos.</p></div><div class="controls"><button id="play" aria-label="Reproduzir ou pausar">▶</button><button id="before" aria-label="Voltar para o início">⟲</button><input type="range" id="seek" value="0" min="0" max="1000" step="1" aria-label="Posição do vídeo"><span id="clock">0:00 / 0:05</span><button id="mute" aria-label="Áudio indisponível" disabled>♪̸</button><button id="fullscreen" aria-label="Tela cheia">⛶</button></div></div></section><section class="details"><div><span class="eyebrow">CINEMA EM CASA · ETAPA 01</span><h2>Uma sala. Várias experiências.</h2><p>Esta primeira versão demonstra apenas o movimento da persiana para validar a biblioteca de vídeos. As transições de TV, LED e iluminação serão produzidas e homologadas separadamente, antes da montagem da cena completa.</p></div><div class="actions"><a class="primary" href="formulario.html">Escolher cenas no catálogo</a><a href="video-lab.html">Abrir fábrica de vídeos</a></div></section><section class="frames"><article><img src="assets/rooms/living-model/GLC_LIVING_BASE_001.webp" alt="Sala modelo com persiana aberta"><span>QUADRO 01 · ABERTA</span></article><article><img src="assets/rooms/living-model/GLC_LIVING_SC01_BLIND_CLOSED_001.webp" alt="Sala modelo com persiana fechada em simulação técnica"><span>QUADRO 02 · FECHADA</span></article></section><div class="disclaimer">Demonstração 2.5D produzida localmente, sem uso de créditos. Não representa precisão física de uma obra nem conteúdo de IA PixVerse. Os componentes, seus retornos elétricos e modos de controle precisam ser validados por projeto.</div></main><script src="showroom.js" defer></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#06151b">
+  <meta name="description" content="GET LED CENAS · showroom de microefeitos reais em vídeo para demonstração de automação residencial.">
+  <title>GET LED CENAS — Showroom de Efeitos v1.2</title>
+  <link rel="stylesheet" href="showroom-v12.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="index.html" aria-label="GET LED CENAS — Painel">
+      <span class="symbol" aria-hidden="true">◈</span>
+      <span>GET LED <strong>CENAS</strong><small>EXPERIENCE STUDIO</small></span>
+    </a>
+    <nav aria-label="Navegação principal"><a href="video-lab.html">Video Lab</a><a href="formulario.html">Catálogo</a></nav>
+  </header>
+  <main>
+    <section class="intro">
+      <div>
+        <div class="overline">LIVING 001 <span class="dot"></span> EFEITOS TÉCNICOS v1.2</div>
+        <h1>Um ambiente. Múltiplas experiências.</h1>
+        <p>Experimente cada transformação isoladamente. A biblioteca será substituída por vídeos cinematográficos depois da homologação.</p>
+      </div>
+      <div class="intro-cta"><a href="video-lab.html">Como produzimos <span aria-hidden="true">↗</span></a></div>
+    </section>
+
+    <div class="showroom-grid">
+      <section class="viewer-panel" aria-label="Player imersivo dos efeitos">
+        <div class="screen" id="screen" tabindex="0" aria-label="Clique para mostrar os controles do player">
+          <video id="experienceVideo" poster="assets/rooms/living-model/GLC_LIVING_BASE_001.webp" playsinline muted preload="metadata" disablepictureinpicture controlslist="nodownload noplaybackrate" aria-label="Prévia em vídeo do efeito de automação selecionado"></video>
+          <div class="screen-top chrome" id="screenTop">
+            <span class="status-pill"><span class="live-dot"></span> LABORATÓRIO · NÃO HOMOLOGADO</span>
+            <button id="fullScreen" class="icon-button fullscreen" title="Tela cheia" aria-label="Abrir em tela cheia">⛶</button>
+          </div>
+          <div class="center-controls chrome" id="centerControls">
+            <button class="jump" id="prevScene" aria-label="Efeito anterior">‹</button>
+            <button class="main-play" id="mainPlay" aria-label="Reproduzir efeito">▶</button>
+            <button class="jump" id="nextScene" aria-label="Próximo efeito">›</button>
+          </div>
+          <div class="bottom-ui chrome" id="bottomUi">
+            <div class="scene-titles">
+              <span id="sceneIndex">01 / 06</span>
+              <h2 id="sceneTitle">Persiana motorizada</h2>
+              <p id="sceneDescription">Fechamento com movimento contínuo e resposta da luz externa.</p>
+            </div>
+            <div class="transport">
+              <button id="playSmall" aria-label="Reproduzir ou pausar">▶</button>
+              <button id="showBefore" aria-label="Exibir estado inicial">Antes</button>
+              <button id="showAfter" aria-label="Exibir estado final">Depois</button>
+              <input id="timeline" type="range" min="0" max="1000" value="0" step="1" aria-label="Posição do vídeo">
+              <span id="timer">0:00 / 0:05</span>
+              <button id="replay" class="replay" aria-label="Reiniciar vídeo">↻</button>
+            </div>
+          </div>
+          <div class="tap-hint" id="tapHint">Toque para ver os controles</div>
+        </div>
+        <div class="viewer-footer"><span>SIMULAÇÃO ILUSTRATIVA</span><span>720p · câmera fixa · ambientes genéricos</span></div>
+      </section>
+
+      <aside class="scene-panel">
+        <div class="scene-panel-head">
+          <div><span class="overline">BIBLIOTECA DE EFEITOS</span><h3>Escolha o que experimentar</h3></div>
+          <span id="sceneCount">06 efeitos</span>
+        </div>
+        <div class="scene-list" id="sceneList" role="group" aria-label="Seleção dos efeitos disponíveis"></div>
+        <div class="details">
+          <div class="details-title">O que deve acontecer</div>
+          <p id="sceneDetails">A persiana desce sem alterar a geometria do ambiente, respeitando caixilhos e sofá. A luz da janela diminui progressivamente.</p>
+          <div class="details-tagline"><span class="light-check"></span> Produção econômica, com versões preservadas</div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="review-row">
+      <div>
+        <span class="overline">PADRÃO GET LED</span>
+        <h3>Um efeito só entra no catálogo depois da aprovação visual.</h3>
+        <p>Os vídeos atuais são demonstrações técnicas de geometria e transição. Uma versão premium requer revisão de materiais, iluminação, sombras e comportamento real dos equipamentos.</p>
+      </div>
+      <a href="video-lab.html">Continuar no Video Lab ↗</a>
+    </section>
+  </main>
+  <script src="showroom-v12.js" defer></script>
+</body>
+</html>
