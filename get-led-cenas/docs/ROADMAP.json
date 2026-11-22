@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "product": "GET LED CENAS",
+  "updated": "2026-11-22",
+  "project": "VIDEO FACTORY",
+  "current_milestone": "SC01_BLIND_PILOT",
+  "status": "asset_gate_blocked",
+  "current_version": "0.9-lab",
+  "blocks": [
+    {
+      "id": "B01",
+      "text": "Quadro final persiana fechada na geometria exata",
+      "owner": "produção de assets",
+      "state": "todo"
+    },
+    {
+      "id": "B02",
+      "text": "Conta/custos de fal autorizados e acesso seguro",
+      "owner": "Get Led",
+      "state": "todo"
+    },
+    {
+      "id": "B03",
+      "text": "Confirmar direitos de uso das imagens",
+      "owner": "Get Led",
+      "state": "todo"
+    }
+  ],
+  "next_jobs": [
+    {
+      "id": "GLC-SC01-BLIND-001",
+      "engine": "fal-ai/pixverse/v6/transition",
+      "duration_s": 5,
+      "resolution": "720p",
+      "status": "blocked_asset_and_authorization",
+      "estimated_cost_usd": 0.225
+    },
+    {
+      "id": "GLC-SC01-BLIND-002",
+      "engine": "fal-ai/veo3.1/fast/first-last-frame-to-video",
+      "duration_s": 6,
+      "resolution": "720p",
+      "status": "fallback_only",
+      "estimated_cost_usd": 0.6
+    },
+    {
+      "id": "GLC-SC01-BLIND-003",
+      "engine": "kling/v4/image-to-video",
+      "duration_s": 5,
+      "resolution": "720p",
+      "status": "fallback_only",
+      "estimated_cost_usd": 0.785
+    }
+  ],
+  "quality_gate": {
+    "minimum_score": 85,
+    "critical_defects_allowed": 0,
+    "commercial_release_requires_review": true
+  }
+}

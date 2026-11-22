@@ -1,31 +1,39 @@
-# GET LED CENAS — Studio v0.8
+# GET LED CENAS — Video Lab v0.9
 
-## O que mudou
+Laboratório demonstrativo para escolher cena/equipamento, comparar motores de vídeo, estimar o custo de uma tentativa, exportar uma tarefa técnica e revisar vídeos gerados **localmente**.
 
-O protótipo passou a usar **player audiovisual nativo** em vez de criar TV, persiana, pendentes e perfis LED sobre a fotografia com SVG/CSS.
+## Primeira operação
 
-- Showroom em tela cheia, com navegação anterior/próxima e lista de cenas.
-- HUD com auto-ocultação, retorno por toque, gestos laterais e rolagem otimizada para mobile e desktop.
-- Reprodutor HTML5 com MP4 e WebM, pré-carregamento por cena e barra de progresso.
-- Cada cena possui manifesto de mídia independente; somente mídias `status: "aprovado"` são reproduzidas.
-- Quando o vídeo não está pronto, mostra a foto intacta e aviso **"Vídeo em produção"**, sem falsificar equipamentos e sem botões de vídeo funcionais.
-- Preservados o catálogo filtrado por equipamentos, escolha de cenas, cenas personalizadas e envio via WhatsApp.
-- Renderização de fotos e vídeos sem a perda de perspectiva provocada pela camada SVG antiga.
+**Persiana do Living — SC01**. Roteiro preparado; falta o quadro final em perspectiva correta e autorização do provedor. A publicação fica bloqueada até aprovação técnica e de direitos.
 
-## Como testar
+## Acesso
 
-Abrir `index.html` para configurar um formulário, ou `formulario.html` para o modo público demonstrativo. Testar no celular em paisagem, usando o botão `Tela cheia`. O player pode solicitar o próximo vídeo via lista de cenas, mas **não há vídeos finais publicados nesta versão**.
+- `index.html`: painel de criação de formulários (ainda demonstrativo).
+- `formulario.html`: catálogo público mobile-first com player MP4/WebM.
+- `video-lab.html`: comparador de produção e revisão local. É **somente demonstrativo**; nunca inserir chaves ou dados privados.
+- `docs/ROADMAP_MASTER.md`: estado, responsabilidades, critérios de aprovação e etapas.
+- `docs/IDEIA_PARA_COMANDO.md`: padrão para converter ideias textuais do usuário em tickets e prompts executáveis.
+- `docs/PILOTO_SC01_PERSIANA.md`: sequência exata de preparação e produção.
+- `video-factory/adapters.py`: adaptação segura de jobs normalizados aos esquemas de quatro motores (nenhuma requisição de rede).
 
-Para QA, executar `python test_v08.py` e `python test_video_integration.py`, que verificam o fallback e a reprodução de MP4 com um arquivo **sintético temporário, não distribuído**.
+## Motores em comparação
 
-## Como adicionar um vídeo aprovado
+1. PixVerse V6 Transition 720p 5s, quadros inicial/final, US$ 0,225 estimados.
+2. Veo 3.1 Fast 720p **6s**, quadros inicial/final, US$ 0,60 estimados.
+3. Kling 4.0 720p 5s, quadros inicial/final, US$ 0,785 estimados.
 
-1. Exportar a animação do ambiente com máscara e movimentos precisos em Runway + DaVinci Fusion, Blender ou equivalente.
-2. Conferir direitos de uso de imagens e vídeo; nenhum nome, endereço, ID, credencial ou imagem privada do cliente pode entrar no pacote genérico.
-3. Salvar `assets/video/sc01-cinema.mp4` (H.264, yuv420p, faststart). WebM opcional.
-4. Editar `assets/scene-media.json`, associando o caminho e mudando a cena para `"status":"aprovado"`.
-5. Rodar QA, criar um commit e publicar no projeto de teste da Vercel.
+O PixVerse V6 convencional (somente imagem inicial) serve para rascunho, mas não é o fluxo preferido para homologar movimentos de precisão.
 
-**Atenção:** o painel atual não possui autenticação, banco de dados nem revogação de links. Não é um painel administrativo seguro para dados reais.
+## Segurança e credenciais
 
-Veja `docs/GUIA_PRODUCAO_VIDEO.md` para o pipeline audiovisual e os critérios de qualidade.
+Nenhuma chave secreta deve aparecer no site, no GitHub ou nos arquivos enviados pelo cliente. Produção real deve ocorrer por API protegida, respeitando custo aprovado e identidade do usuário autorizado. O laboratório não executa geração paga e não publica resultados diretamente.
+
+## Testes
+
+- `python get_led_cenas_v09/test_video_lab_v09.py` testa UI nos modos mobile, paisagem e desktop (Chromium).
+- `cd get_led_cenas_v09/video-factory && python -m unittest test_adapters.py` verifica preflight de dados e payloads.
+- Resultado em `QA_VIDEO_LAB_v09.json`.
+
+## Histórico
+
+Veja `CHANGELOG.md` e `docs/DECISOES_2026-11-22.md`.
