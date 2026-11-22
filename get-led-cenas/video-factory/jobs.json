@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "project": "GET LED CENAS | VIDEO FACTORY",
+  "model": "fal-ai/pixverse/v6/image-to-video",
+  "model_alternative": "pixverse/v6/max/image-to-video",
+  "production_policy": {
+    "provider": "fal",
+    "default_dry_run": true,
+    "requires_human_visual_approval": true,
+    "max_jobs_per_batch": 3,
+    "standard_resolution": "720p",
+    "standard_duration_s": 5,
+    "camera": "tripod fixed, no zoom or pan",
+    "public_distribution_requires_asset_rights": true
+  },
+  "jobs": [
+    {
+      "id": "SC01_BLIND_PILOT",
+      "scene_id": "SC01",
+      "scene_name": "Cinema em Casa",
+      "stage": "one_device_test",
+      "input": "inputs/sala_base_16x9.jpg",
+      "duration": 5,
+      "resolution": "720p",
+      "prompt": "Photorealistic architectural interior video. LOCKED TRIPOD CAMERA, absolutely no camera movement. Preserve the EXACT same luxury living room, geometry, furniture, walls, sofa, television, soundbar, ceiling, LED profiles and window frame. ONLY the existing motorized roller blind over the window slowly lowers from top to bottom inside the precise frame. The blind fabric moves physically realistically; daylight on the floor and furniture gradually decreases. TV stays OFF, lights remain unchanged. No new objects, no extra screen. The final second is completely still. Premium real estate interior film, coherent shadows.",
+      "negative_prompt": "camera zoom, camera pan, moving furniture, warped architecture, melting objects, second television, floating window coverings, mismatched window frame, changing perspective, people, flicker, watermarks, text"
+    },
+    {
+      "id": "SC01_TV_PILOT",
+      "scene_id": "SC01",
+      "scene_name": "Cinema em Casa",
+      "stage": "one_device_test",
+      "input": "inputs/sala_base_16x9.jpg",
+      "duration": 5,
+      "resolution": "720p",
+      "prompt": "Photorealistic fixed-camera architectural interior film. Preserve the exact room, television location and perspective from the reference first frame. ONLY the EXISTING television screen turns on in place: black display softly transitions into subtle cinematic blue moving imagery strictly INSIDE the exact original screen bezel. A faint natural blue reflection appears on the adjacent wall and cabinet. All furniture, curtains, window, ceiling LED lines and pendant fixtures remain fixed and unchanged. Static tripod, no camera movement, no objects added. End on a stable illuminated TV for one second.",
+      "negative_prompt": "additional television, duplicated screen, TV floating outside original frame, screen moving, camera movement, warped walls, fake interface, subtitles, logo, people, drifting furniture"
+    },
+    {
+      "id": "SC03_DINING_PILOT",
+      "scene_id": "SC03",
+      "scene_name": "Jantar Especial",
+      "stage": "whole_scene_test",
+      "input": "inputs/jantar_base_16x9.jpg",
+      "duration": 5,
+      "resolution": "720p",
+      "prompt": "Luxury interior architecture film, completely locked camera and unchanged geometry. In the exact dining room from the reference, the EXISTING chandelier and pendant lighting progressively turn ON, revealing warm amber light reflected on the same dining table and wall surfaces. Existing ceiling linear lighting provides subtle secondary accents only where fixtures already exist. No new lamps or light sources. Table, chairs and all room elements stay motionless and architecturally identical. Continuous physically plausible lighting change, cinematic yet realistic. Last one second perfectly steady.",
+      "negative_prompt": "new pendants, duplicate lamps, flying furniture, changing table size, changing window or doors, artificial glowing outlines, camera movement, blurry geometry, people, watermarks, flicker"
+    },
+    {
+      "id": "SC04_RECEIVE_PILOT",
+      "scene_id": "SC04",
+      "scene_name": "Receber Visitas",
+      "stage": "whole_scene_test",
+      "input": "inputs/sala_base_16x9.jpg",
+      "duration": 5,
+      "resolution": "720p",
+      "prompt": "Photorealistic luxury living room, the exact same composition throughout, static architectural camera with no movement. Existing ceiling linear LED profiles gradually illuminate in warm white, followed by the existing decorative pendant lights. The existing sofa, TV, window and marble wall remain perfectly unchanged. Realistic warm reflections wash over the actual ceiling and surfaces, building an inviting entertaining atmosphere; the original TV stays OFF and window coverings remain unchanged. No new light strips, fixtures, furniture or windows. Last second a stable elegant completed ambience.",
+      "negative_prompt": "extra lamps or LED lines, second TV, new furniture, changes in geometry, camera movement, exaggerated glowing outlines, unnatural colors, overexposure, people, text, watermarks"
+    }
+  ]
+}
