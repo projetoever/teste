@@ -18,7 +18,7 @@ const config = valid ? {
 const scenes = u.visible(config);
 let selected = new Set(), active = scenes[0] || null, filter = 'Todas', query = '', limit = 6, isBefore = false, modalOpen = false, activeStop = 0, tourTimer = null, sequencePlaying = false;
 let stageTimers = [];
-const sessionKey = 'getled_cenas_selection_v06_' + hash.slice(0, 55).replace(/[^\w-]/g, '') + '_' + scenes.length;
+const sessionKey = 'getled_cenas_selection_v07_' + hash.slice(0, 55).replace(/[^\w-]/g, '') + '_' + scenes.length;
 
 try {
   const v = JSON.parse(localStorage.getItem(sessionKey) || 'null');
@@ -199,6 +199,7 @@ function applyAllStages() {
   if (modalOpen) {
     updateDeviceChips();
     updateModalStateGrid();
+    window.GetLedPlayer?.sync(active, isBefore);
   }
 }
 function updateMainState() {
@@ -254,6 +255,7 @@ function stopTour(silent = true) {
     tourTimer = null;
     if (!silent) u.toast('Visita do ambiente encerrada');
   }
+  window.GetLedPlayer?.visit(false);
   if ($('modalVisitToggle')) {
     $('modalVisitToggle').textContent = '◈ Visitar ambiente';
     $('modalVisitToggle').classList.remove('active');
@@ -278,6 +280,7 @@ function setActiveStop(index, manual = false) {
 function startTour() {
   if (!active) return;
   stopTour();
+  window.GetLedPlayer?.visit(true);
   $('modalVisitToggle').textContent = '■ Encerrar visita';
   $('modalVisitToggle').classList.add('active');
   tourTimer = setInterval(() => setActiveStop(activeStop + 1), 2600);
@@ -290,38 +293,18 @@ function playSceneSequence() {
   if (!active) return;
   stopTour();
   clearStageTimers();
-  window.GetLedGPU?.playSequence();
   sequencePlaying = true;
-  $('sequenceStatus')?.classList.add('live');
-  $('modalVisual')?.classList.add('sequence-running');
-  $('studio')?.classList.add('sequence-running');
   isBefore = true;
   applyAllStages();
   syncBefore();
-  if ($('modalVisual')) {
-    $('modalVisual').classList.remove('sequence-live');
-    void $('modalVisual').offsetWidth;
-    $('modalVisual').classList.add('sequence-live');
-  }
-  if ($('studio')) {
-    $('studio').classList.remove('sequence-live');
-    void $('studio').offsetWidth;
-    $('studio').classList.add('sequence-live');
-  }
-  renderSequencePlan(active).forEach(step => {
-    stageTimers.push(setTimeout(() => setSequenceStatus(step.title, step.detail), step.delay));
-  });
-  stageTimers.push(setTimeout(() => {
+  if (window.GetLedPlayer) {
+    window.GetLedPlayer.play(active);
+  } else {
     isBefore = false;
     applyAllStages();
-    syncBefore();
-  }, 560));
-  stageTimers.push(setTimeout(() => {
-    $('modalVisual')?.classList.remove('sequence-live');
-    $('studio')?.classList.remove('sequence-live');
-    resetSequenceStatus();
-  }, 2680));
+  }
 }
+
 function simulate(s, opts = {}) {
   if (!s) return;
   active = s;
@@ -361,6 +344,7 @@ function updateModal() {
   $('modalSubtitle').textContent = `${ENV_LABEL[sceneEnv(active)] || 'Ambiente'} · melhor experiência em paisagem`;
   $('modalDetails').textContent = active.desc;
   $('modalChoose').textContent = selected.has(active.id) ? '✓ Cena selecionada' : '+ Escolher cena';
+  window.GetLedPlayer?.updateSceneMeta(active);
   if (!sequencePlaying) resetSequenceStatus();
   applyAllStages();
   updateTourUI();
@@ -554,8 +538,9 @@ function openModal() {
   modalOpen = true;
   $('simModal').classList.remove('hidden');
   document.body.classList.add('modal-open');
-  window.GetLedGPU?.start();
   updateModal();
+  window.GetLedPlayer?.open(active);
+  if (sceneEnv(active) !== 'living') window.GetLedGPU?.start();
   $('modalClose').focus();
 }
 function closeModal() {
@@ -565,6 +550,7 @@ function closeModal() {
   $('simModal').classList.add('hidden');
   document.body.classList.remove('modal-open');
   window.GetLedGPU?.stop();
+  window.GetLedPlayer?.close();
   $('fullscreenSim').focus();
 }
 

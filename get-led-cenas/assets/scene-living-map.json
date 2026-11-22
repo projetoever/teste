@@ -1,0 +1,23 @@
+{
+  "version":"0.7",
+  "asset":"sala-premium.webp",
+  "image_size":{"width":1450,"height":967},
+  "source":"Imagem de referência genérica do produto GET LED CENAS. Não representa instalação executada.",
+  "layers":{
+    "persiana":{"mask":"M419 381 L926 380 926 637 419 637Z","animation":"scaleY(-265px→0)","duration_ms":2000},
+    "perfil_led":{"paths":["M262 -8 L558 342","M406 -8 L561 330","M1133 -8 L930 346"],"light_color":"#ffe6b8","animation":"stroke-dashoffset 610→0","duration_ms":1500},
+    "tv":{"mask":"M1135 355 L1426 277 1426 601 1135 575Z","animation":"screen scaleY .018→1 and glow","duration_ms":950},
+    "soundbar":{"position":{"x":1150,"y":613,"w":250,"h":45},"animation":"pulse/pips","duration_ms":750},
+    "pendentes":{"centers":[[151,414],[267,447]],"animation":"bloom"}
+  },
+  "scene_timeline_ms":[
+    {"at":0,"phase":"before","details":"Ambiente base"},
+    {"at":380,"phase":"dim","details":"Luz geral reduzida"},
+    {"at":1080,"phase":"shade","details":"Persiana baixa"},
+    {"at":2320,"phase":"led","details":"Perfis de LED acendem"},
+    {"at":3400,"phase":"tv","details":"TV ligada com reflexo"},
+    {"at":4170,"phase":"audio","details":"Soundbar ativada"},
+    {"at":5100,"phase":"done","details":"Cena aplicada"}
+  ],
+  "limitations":"As camadas sobre fotografia são ilustrativas, com coordenadas calibradas apenas para esta imagem. Para simulação física realista, é necessária cena 3D, máscaras fotométricas, sombras e movimento da persiana com geometria."
+}
