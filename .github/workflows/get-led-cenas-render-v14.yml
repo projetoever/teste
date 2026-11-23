@@ -1,0 +1,60 @@
+name: GET LED CENAS - render microtransitions v1.4
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'get-led-cenas/render_effects_v14.py'
+      - '.github/workflows/get-led-cenas-render-v14.yml'
+permissions:
+  contents: write
+concurrency:
+  group: get-led-render-v14
+  cancel-in-progress: false
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install image and video dependencies
+        run: |
+          python -m pip install --disable-pip-version-check 'numpy<2.0' 'opencv-python-headless<4.11' 'Pillow>=10,<12'
+          ffmpeg -version | head -n 1
+      - name: Re-render versioned technical previews
+        run: |
+          cd get-led-cenas
+          python render_effects_v14.py --presets blind led tv cinema
+      - name: Validate generated media and before-after pairs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, subprocess
+          from PIL import Image
+          root=Path('get-led-cenas')
+          man=json.loads((root/'assets/rooms/living-model/v14/manifest.json').read_text())
+          assert man['approved'] is False
+          assert set(man['presets'])=={'blind','led','tv','cinema'}
+          for key,p in man['presets'].items():
+              for state in ('before','middle','after'):
+                  f=root/p[state]
+                  assert f.exists(),f
+                  with Image.open(f) as img:
+                      assert img.size==(1280,720),(f,img.size)
+              f=root/p['mp4']; assert f.exists(),f
+              info=json.loads(subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_entries','stream=width,height,codec_name','-of','json',str(f)]))
+              assert info['streams'][0]['codec_name']=='h264'
+              assert (info['streams'][0]['width'],info['streams'][0]['height'])==(1280,720)
+          print('All four technical previews validated; visual QA still pending.')
+          PY
+      - name: Save new assets without modifying older renders
+        run: |
+          git config user.name 'get-led-scenes-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add get-led-cenas/assets/rooms/living-model/v14 get-led-cenas/assets/video/v14
+          git diff --cached --quiet || git commit -m "assets(get-led-cenas): v1.4 technical transitions, unapproved"
+          git push
