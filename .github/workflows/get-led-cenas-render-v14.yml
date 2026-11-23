@@ -59,4 +59,5 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add get-led-cenas/assets/rooms/living-model/v14 get-led-cenas/assets/video/v14
           git diff --cached --quiet || git commit -m "assets(get-led-cenas): v1.4 technical transitions, unapproved"
-          git push
+          git pull --rebase origin main
+          git push origin HEAD:main
