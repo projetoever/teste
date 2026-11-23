@@ -93,24 +93,40 @@
   document.addEventListener('fullscreenchange',reveal);
   document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName))return;if(e.key==='ArrowLeft')jump(-1);else if(e.key==='ArrowRight')jump(1);else if(e.key===' '){e.preventDefault();play();}else if(e.key.toLowerCase()==='f'){if(document.fullscreenElement)document.exitFullscreen?.();else screen.requestFullscreen?.().catch(()=>{});}});
   choose(0);
-  // v1.4 files are adopted only when confirmed deployed. An absent render safely falls back to v1.2.
-  const newer = {
-    blind:'GLC_ME01_PERSIANA_V14',
-    led:'GLC_ME04_PERFIS_LED_V14',
-    tv:'GLC_ME06_TV_V14',
-    cinema:'GLC_SC01_CINEMA_V14'
+  // Adopt the latest successfully deployed media. Older immutable versions
+  // remain as fallbacks; no broken v1.5 URL may be shown to a customer.
+  const libraries = {
+    blind:[['v15','GLC_ME01_PERSIANA_V15'],['v14','GLC_ME01_PERSIANA_V14']],
+    led:[['v15','GLC_ME04_PERFIS_LED_V15'],['v14','GLC_ME04_PERFIS_LED_V14']],
+    tv:[['v15','GLC_ME06_TV_V15'],['v14','GLC_ME06_TV_V14']],
+    cinema:[['v15','GLC_SC01_CINEMA_V15'],['v14','GLC_SC01_CINEMA_V14']]
   };
-  Object.entries(newer).forEach(async ([key,id])=>{
-    try{
-      const url='assets/video/v14/'+id+'.mp4';
-      const head=await fetch(url,{method:'HEAD',cache:'no-store'});
-      const type=(head.headers.get('content-type')||'').toLowerCase();
-      if(!head.ok || !(type.includes('video')||type.includes('mp4'))) return;
-      const p=presets.find(p=>p.key===key);
-      if(!p)return;
-      p.id=id;p.version='v14';p.name=p.name.replace(/ v[0-9]+$/,'')+' v1.4';
-      renderList();
-      if(presets[current]===p && video.paused)choose(current);
-    }catch(_e){ /* Keep the verified v1.2 source on network or render failure. */ }
+  Object.entries(libraries).forEach(async ([key,variants])=>{
+    for(const [version,id] of variants){
+      try{
+        const url='assets/video/'+version+'/'+id+'.mp4';
+        const head=await fetch(url,{method:'HEAD',cache:'no-store'});
+        const type=(head.headers.get('content-type')||'').toLowerCase();
+        if(!head.ok || (!type.includes('video')&&!type.includes('mp4')))continue;
+        const p=presets.find(p=>p.key===key);
+        if(!p)break;
+        p.id=id;p.version=version;
+        p.name=p.name.replace(/ v(?:[0-9]+(?:\.[0-9]+)?)$/,'')+
+          ' v'+(version==='v15'?'1.5':'1.4');
+        if(version==='v15'){
+          const descriptions={
+            blind:'Tecido translúcido e barra rolô se movimentam dentro dos três vidros; caixilhos e sofá preservados.',
+            led:'Apenas os detalhes luminosos já presentes nos rasgos fotografados acendem; nenhuma nova linha é desenhada.',
+            tv:'A imagem surge dentro da televisão original, sem alterar moldura ou perspectiva.',
+            cinema:'Persiana, iluminação social, perfis e TV são ativados em etapas de 5 segundos.'
+          };
+          p.desc=descriptions[key];
+          if(key==='cinema')p.time=5;
+        }
+        renderList();
+        if(presets[current]===p)choose(current);
+        break;
+      }catch(_error){ /* Keep existing working version. */ }
+    }
   });
 })();
