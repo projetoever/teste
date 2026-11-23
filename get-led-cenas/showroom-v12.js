@@ -33,9 +33,9 @@
   let current = 0;
   let chromeTimer = 0;
   let touchStart = null;
-  const base = 'assets/rooms/living-model/v12/';
-  const mp4 = 'assets/video/v12/';
-  const frame = (p,state='BEFORE') => `${base}${p.id}_${state}.webp`;
+  // Resolve media by version; prior releases stay available and are never overwritten.
+  const frame = (p,state='BEFORE') => `assets/rooms/living-model/${p.version||'v12'}/${p.id}_${state}.webp`;
+  const movie = (p) => `assets/video/${p.version||'v12'}/${p.id}.mp4`;
   const time = (v) => { const n = Math.max(0, Math.floor(Number(v)||0)); return `${Math.floor(n/60)}:${String(n%60).padStart(2,'0')}`; };
   const setPlayingUI = (playing) => { $('mainPlay').textContent = playing?'Ⅱ':'▶'; $('playSmall').textContent = playing?'Ⅱ':'▶'; };
   const reveal = () => {
@@ -56,7 +56,7 @@
       button.type='button';button.className='scene-item'+(i===current?' active':'');
       button.setAttribute('aria-pressed',i===current?'true':'false');
       const img=document.createElement('img');img.src=frame(p,'AFTER');img.alt='Quadro final do efeito';img.loading='lazy';
-      const meta=document.createElement('span');const strong=document.createElement('strong');strong.textContent=p.name;const small=document.createElement('small');small.textContent=`${p.time.toFixed(1)} segundos • técnico`;meta.append(strong,small);button.append(img,meta);
+      const meta=document.createElement('span');const strong=document.createElement('strong');strong.textContent=p.name;const small=document.createElement('small');small.textContent=`${p.time.toFixed(1)} s • ${p.version||'v1.2'} • não homologado`;meta.append(strong,small);button.append(img,meta);
       button.addEventListener('click',()=>choose(i));list.append(button);
     });
   };
@@ -64,7 +64,7 @@
     current=(index+presets.length)%presets.length;
     const p=presets[current];
     video.pause(); screen.classList.remove('frame-active'); video.removeAttribute('src'); video.load();
-    video.poster=frame(p,'BEFORE');video.src=mp4+p.id+'.mp4';video.load();
+    video.poster=frame(p,'BEFORE');video.src=movie(p);video.load();
     $('sceneIndex').textContent=`${String(current+1).padStart(2,'0')} / ${String(presets.length).padStart(2,'0')}`;
     $('sceneTitle').textContent=p.name;
     $('sceneDescription').textContent=p.desc;
@@ -93,4 +93,24 @@
   document.addEventListener('fullscreenchange',reveal);
   document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName))return;if(e.key==='ArrowLeft')jump(-1);else if(e.key==='ArrowRight')jump(1);else if(e.key===' '){e.preventDefault();play();}else if(e.key.toLowerCase()==='f'){if(document.fullscreenElement)document.exitFullscreen?.();else screen.requestFullscreen?.().catch(()=>{});}});
   choose(0);
+  // v1.4 files are adopted only when confirmed deployed. An absent render safely falls back to v1.2.
+  const newer = {
+    blind:'GLC_ME01_PERSIANA_V14',
+    led:'GLC_ME04_PERFIS_LED_V14',
+    tv:'GLC_ME06_TV_V14',
+    cinema:'GLC_SC01_CINEMA_V14'
+  };
+  Object.entries(newer).forEach(async ([key,id])=>{
+    try{
+      const url='assets/video/v14/'+id+'.mp4';
+      const head=await fetch(url,{method:'HEAD',cache:'no-store'});
+      const type=(head.headers.get('content-type')||'').toLowerCase();
+      if(!head.ok || !(type.includes('video')||type.includes('mp4'))) return;
+      const p=presets.find(p=>p.key===key);
+      if(!p)return;
+      p.id=id;p.version='v14';p.name=p.name.replace(/ v[0-9]+$/,'')+' v1.4';
+      renderList();
+      if(presets[current]===p && video.paused)choose(current);
+    }catch(_e){ /* Keep the verified v1.2 source on network or render failure. */ }
+  });
 })();
