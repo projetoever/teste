@@ -1,0 +1,49 @@
+{
+  "schema": 2,
+  "version": "1.4",
+  "source": "assets/rooms/living-model/GLC_LIVING_BASE_001.webp",
+  "resolution": [
+    1280,
+    720
+  ],
+  "engine": "geometry-locked-v14-reference; not physically homologated",
+  "approved": false,
+  "presets": {
+    "blind": {
+      "id": "GLC_ME01_PERSIANA_V14",
+      "duration": 5.0,
+      "before": "assets/rooms/living-model/v14/GLC_ME01_PERSIANA_V14_BEFORE.webp",
+      "middle": "assets/rooms/living-model/v14/GLC_ME01_PERSIANA_V14_MID.webp",
+      "after": "assets/rooms/living-model/v14/GLC_ME01_PERSIANA_V14_AFTER.webp",
+      "mp4": "assets/video/v14/GLC_ME01_PERSIANA_V14.mp4",
+      "status": "piloto_tecnico_nao_homologado"
+    },
+    "led": {
+      "id": "GLC_ME04_PERFIS_LED_V14",
+      "duration": 3.5,
+      "before": "assets/rooms/living-model/v14/GLC_ME04_PERFIS_LED_V14_BEFORE.webp",
+      "middle": "assets/rooms/living-model/v14/GLC_ME04_PERFIS_LED_V14_MID.webp",
+      "after": "assets/rooms/living-model/v14/GLC_ME04_PERFIS_LED_V14_AFTER.webp",
+      "mp4": "assets/video/v14/GLC_ME04_PERFIS_LED_V14.mp4",
+      "status": "piloto_tecnico_nao_homologado"
+    },
+    "tv": {
+      "id": "GLC_ME06_TV_V14",
+      "duration": 3.0,
+      "before": "assets/rooms/living-model/v14/GLC_ME06_TV_V14_BEFORE.webp",
+      "middle": "assets/rooms/living-model/v14/GLC_ME06_TV_V14_MID.webp",
+      "after": "assets/rooms/living-model/v14/GLC_ME06_TV_V14_AFTER.webp",
+      "mp4": "assets/video/v14/GLC_ME06_TV_V14.mp4",
+      "status": "piloto_tecnico_nao_homologado"
+    },
+    "cinema": {
+      "id": "GLC_SC01_CINEMA_V14",
+      "duration": 7.0,
+      "before": "assets/rooms/living-model/v14/GLC_SC01_CINEMA_V14_BEFORE.webp",
+      "middle": "assets/rooms/living-model/v14/GLC_SC01_CINEMA_V14_MID.webp",
+      "after": "assets/rooms/living-model/v14/GLC_SC01_CINEMA_V14_AFTER.webp",
+      "mp4": "assets/video/v14/GLC_SC01_CINEMA_V14.mp4",
+      "status": "piloto_tecnico_nao_homologado"
+    }
+  }
+}
