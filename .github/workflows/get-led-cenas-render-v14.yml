@@ -21,8 +21,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install image and video dependencies
+      - name: Install system FFmpeg and Python imaging dependencies
         run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
           python -m pip install --disable-pip-version-check 'numpy<2.0' 'opencv-python-headless<4.11' 'Pillow>=10,<12'
           ffmpeg -version | head -n 1
       - name: Re-render versioned technical previews
