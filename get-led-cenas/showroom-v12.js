@@ -12,6 +12,24 @@
     {key:'tv',name:'TV ligando v1',desc:'O brilho é aplicado dentro da tela original, sem duplicar a televisão nem deslocar o painel.',id:'GLC_SC05_TV_V01',time:3},
     {key:'cinema',name:'Cinema em Casa v1',desc:'Persiana, luzes, perfis e televisão entram em sequência; composição ainda técnica.',id:'GLC_SC06_CINEMA_COMPOSTO_V01',time:7}
   ];
+  // A visualização de quadros usa os arquivos já existentes da mesma câmera.
+  const still = document.createElement('img');
+  still.id = 'sceneStill'; still.alt = 'Estado visual da transição';
+  still.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#060e11;z-index:1;display:none;pointer-events:none';
+  video.insertAdjacentElement('afterend', still);
+  const style = document.createElement('style');
+  style.textContent = '#sceneStill{transition:none} .frame-active #sceneStill{display:block!important} .screen.frame-active video{visibility:hidden} .frame-active .center-controls{z-index:3} .frame-active .screen-top,.frame-active .bottom-ui{z-index:3}.frame-state{display:inline-block;font-size:10px;padding:5px 9px;border-radius:999px;background:#173943;color:#bdfcf4;border:1px solid #437980;margin:8px 0 0}.scene-item.active{outline:2px solid #68e9e1;outline-offset:-2px}';document.head.append(style);
+  const stage = document.createElement('span');stage.className='frame-state';stage.id='frameState';stage.setAttribute('aria-live','polite');
+  $('sceneDetails').insertAdjacentElement('afterend',stage);
+  const labelState = (name) => { stage.textContent=name; };
+  const frameMode = (state) => {
+    video.pause(); setPlayingUI(false);
+    const p=presets[current]; still.src=frame(p,state);
+    still.alt=state==='BEFORE'?'Antes: estado inicial do dispositivo':'Depois: estado final ilustrativo do dispositivo';
+    screen.classList.add('frame-active');labelState(state==='BEFORE'?'QUADRO INICIAL • mesmo ambiente':'QUADRO FINAL • prévia técnica não homologada');
+    $('timeline').value=state==='BEFORE'?'0':'1000';
+    reveal();
+  };
   let current = 0;
   let chromeTimer = 0;
   let touchStart = null;
@@ -26,6 +44,7 @@
     if(!video.paused && !video.ended) chromeTimer=setTimeout(()=>screen.classList.add('hide-chrome'),2600);
   };
   const play = () => {
+    screen.classList.remove('frame-active');labelState('VÍDEO TÉCNICO • demonstração não homologada');
     if(video.paused){if(video.ended || (video.duration && video.currentTime >= video.duration-.05))video.currentTime=0;video.play().catch(()=>reveal());}
     else video.pause();
     reveal();
@@ -44,28 +63,28 @@
   const choose=(index,{auto=false}={})=>{
     current=(index+presets.length)%presets.length;
     const p=presets[current];
-    video.pause(); video.removeAttribute('src'); video.load();
+    video.pause(); screen.classList.remove('frame-active'); video.removeAttribute('src'); video.load();
     video.poster=frame(p,'BEFORE');video.src=mp4+p.id+'.mp4';video.load();
     $('sceneIndex').textContent=`${String(current+1).padStart(2,'0')} / ${String(presets.length).padStart(2,'0')}`;
     $('sceneTitle').textContent=p.name;
     $('sceneDescription').textContent=p.desc;
     $('sceneDetails').textContent=p.desc;
     $('timer').textContent=`0:00 / ${time(p.time)}`;
-    $('timeline').value='0'; setPlayingUI(false);renderList();reveal();
+    $('timeline').value='0'; setPlayingUI(false);renderList();frameMode('BEFORE');reveal();
     if(auto) video.play().catch(()=>reveal());
   };
   const jump=(step)=>choose(current+step);
   $('prevScene').onclick=()=>jump(-1);$('nextScene').onclick=()=>jump(1);
   $('mainPlay').onclick=play;$('playSmall').onclick=play;
-  $('replay').onclick=()=>{video.pause();video.currentTime=0;play();};
-  $('showBefore').onclick=()=>{video.pause();video.currentTime=0;setPlayingUI(false);reveal();};
-  $('showAfter').onclick=()=>{video.pause();if(video.readyState>=1)video.currentTime=Math.max(0,video.duration-.05);setPlayingUI(false);reveal();};
-  $('timeline').oninput=(e)=>{if(video.duration && Number.isFinite(video.duration))video.currentTime=Number(e.target.value)/1000*video.duration;reveal();};
+  $('replay').onclick=()=>{video.pause();video.currentTime=0;screen.classList.remove('frame-active');play();};
+  $('showBefore').onclick=()=>frameMode('BEFORE');
+  $('showAfter').onclick=()=>frameMode('AFTER');
+  $('timeline').oninput=(e)=>{screen.classList.remove('frame-active');labelState('VÍDEO TÉCNICO • navegação quadro a quadro');if(video.duration && Number.isFinite(video.duration))video.currentTime=Number(e.target.value)/1000*video.duration;reveal();};
   video.ontimeupdate=()=>{const d=(video.duration&&Number.isFinite(video.duration))?video.duration:presets[current].time;$('timer').textContent=`${time(video.currentTime)} / ${time(d)}`;$('timeline').value=String(Math.round(1000*video.currentTime/d));};
   video.onplay=()=>{setPlayingUI(true);reveal();};
   video.onpause=()=>{setPlayingUI(false);reveal();};
-  video.onended=()=>{setPlayingUI(false);reveal();};
-  video.onerror=()=>{$('sceneDescription').textContent='Mídia ainda não carregada. Tente atualizar a página.';setPlayingUI(false);};
+  video.onended=()=>{setPlayingUI(false);labelState('TRANSIÇÃO CONCLUÍDA • compare os quadros');reveal();};
+  video.onerror=()=>{$('sceneDescription').textContent='Vídeo indisponível. Use Antes/Depois para avaliar os quadros existentes.';frameMode('BEFORE');};
   $('fullScreen').onclick=()=>{if(document.fullscreenElement) document.exitFullscreen?.();else screen.requestFullscreen?.().catch(()=>{});};
   screen.addEventListener('pointermove',reveal);
   screen.addEventListener('touchstart',(e)=>{touchStart={x:e.touches[0].clientX,y:e.touches[0].clientY};reveal();},{passive:true});
