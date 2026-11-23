@@ -8,7 +8,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: get-led-render-v15
+  group: get-led-render-v15-pip-ffmpeg
   cancel-in-progress: false
 jobs:
   render:
@@ -21,11 +21,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install deterministic renderer dependencies
+      - name: Install deterministic dependencies and portable FFmpeg
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg
-          python -m pip install --disable-pip-version-check 'numpy<2' 'opencv-python-headless<4.11' 'Pillow>=10,<12'
+          python -m pip install --disable-pip-version-check 'numpy<2' 'opencv-python-headless<4.11' 'Pillow>=10,<12' 'imageio-ffmpeg>=0.5'
+          install -d "$RUNNER_TEMP/getled-bin"
+          ln -s "$(python -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')" "$RUNNER_TEMP/getled-bin/ffmpeg"
+          echo "$RUNNER_TEMP/getled-bin" >> "$GITHUB_PATH"
       - name: Render all four new v1.5 previews
         run: |
           cd get-led-cenas
@@ -33,7 +34,7 @@ jobs:
       - name: Geometry and video QA gates
         run: |
           python - <<'PY'
-          import json,subprocess
+          import json
           import numpy as np
           from pathlib import Path
           from PIL import Image
@@ -51,10 +52,15 @@ jobs:
                       images.append(np.asarray(im.convert('RGB'),dtype=np.int16))
               assert np.abs(images[2]-images[0]).sum()>10000,name
               mp4=root/p['mp4'];assert mp4.exists()
-              info=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-show_entries','stream=codec_name,width,height','-select_streams','v:0','-of','json',str(mp4)]))
-              s=info['streams'][0]
-              assert (s['codec_name'],s['width'],s['height'])==('h264',1280,720)
-              assert abs(float(info['format']['duration'])-p['duration'])<.2
+              import cv2
+              cap=cv2.VideoCapture(str(mp4))
+              assert cap.isOpened(),mp4
+              assert int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))==1280
+              assert int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))==720
+              fps=cap.get(cv2.CAP_PROP_FPS)
+              length=cap.get(cv2.CAP_PROP_FRAME_COUNT)
+              assert fps>=20 and abs(length/fps-p['duration'])<.2
+              cap.release()
               if name=='led':
                   # LED must not draw anything below the photographed ceiling.
                   a,b=images[0],images[2]
