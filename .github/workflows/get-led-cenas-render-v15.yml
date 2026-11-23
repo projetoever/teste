@@ -1,0 +1,74 @@
+name: GET LED CENAS - render verified technical v1.5
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'get-led-cenas/render_effects_v15.py'
+      - '.github/workflows/get-led-cenas-render-v15.yml'
+permissions:
+  contents: write
+concurrency:
+  group: get-led-render-v15
+  cancel-in-progress: false
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deterministic renderer dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          python -m pip install --disable-pip-version-check 'numpy<2' 'opencv-python-headless<4.11' 'Pillow>=10,<12'
+      - name: Render all four new v1.5 previews
+        run: |
+          cd get-led-cenas
+          python render_effects_v15.py --presets blind led tv cinema
+      - name: Geometry and video QA gates
+        run: |
+          python - <<'PY'
+          import json,subprocess
+          import numpy as np
+          from pathlib import Path
+          from PIL import Image
+          root=Path('get-led-cenas')
+          m=json.loads((root/'assets/rooms/living-model/v15/manifest.json').read_text())
+          assert m['approved'] is False
+          assert set(m['presets'])=={'blind','led','tv','cinema'}
+          for name,p in m['presets'].items():
+              images=[]
+              for field in ('before','middle','after'):
+                  file=root/p[field]
+                  assert file.exists()
+                  with Image.open(file) as im:
+                      assert im.size==(1280,720)
+                      images.append(np.asarray(im.convert('RGB'),dtype=np.int16))
+              assert np.abs(images[2]-images[0]).sum()>10000,name
+              mp4=root/p['mp4'];assert mp4.exists()
+              info=json.loads(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-show_entries','stream=codec_name,width,height','-select_streams','v:0','-of','json',str(mp4)]))
+              s=info['streams'][0]
+              assert (s['codec_name'],s['width'],s['height'])==('h264',1280,720)
+              assert abs(float(info['format']['duration'])-p['duration'])<.2
+              if name=='led':
+                  # LED must not draw anything below the photographed ceiling.
+                  a,b=images[0],images[2]
+                  assert np.max(np.abs(a[252:]-b[252:]))<5,'LED changed objects outside the ceiling'
+              print('PASS',name,p['duration'],flush=True)
+          print('Technical geometry/format QA passed. Human visual review still required.')
+          PY
+      - name: Commit immutable v1.5 previews
+        run: |
+          git config user.name 'get-led-scenes-bot'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add get-led-cenas/assets/rooms/living-model/v15 get-led-cenas/assets/video/v15
+          if ! git diff --cached --quiet; then
+            git commit -m "assets(get-led-cenas): new v1.5 reviewed-format renders"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
